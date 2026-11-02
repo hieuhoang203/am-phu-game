@@ -429,7 +429,7 @@ export function SettingsPanel({
                   </span>
                 </div>
                 <div>
-                  <span>Tương tác đèn / Phán quan / cổng</span>
+                  <span>Rương / di tích / cư dân / cổng</span>
                   <kbd>E</kbd>
                 </div>
                 {Object.entries(prankRules)

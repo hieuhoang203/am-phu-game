@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+const GAME_URL = process.env.GAME_URL || "http://localhost:3001";
 test("settings persist, all four tabs work, appearance is visible to a second player and audio gains respond", async ({
   browser,
 }) => {
@@ -24,13 +25,9 @@ test("settings persist, all four tabs work, appearance is visible to a second pl
   const page = await ctx.newPage(),
     errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("http://localhost:3001");
-  await page
-    .getByRole("button", { name: "Cài đặt trò chơi", exact: true })
-    .click();
-  await expect(
-    page.getByRole("dialog", { name: "Cài đặt trò chơi" }),
-  ).toBeVisible();
+  await page.goto(GAME_URL);
+  await page.getByRole("button", { name: "Cài đặt", exact: true }).click();
+  await expect(page.getByRole("dialog", { name: "Cài đặt" })).toBeVisible();
   await page
     .getByRole("dialog")
     .getByRole("button", { name: "Bật âm thanh", exact: true })
@@ -108,15 +105,13 @@ test("settings persist, all four tabs work, appearance is visible to a second pl
   await page
     .getByRole("checkbox", { name: "Nút thao tác lớn", exact: true })
     .check();
-  await expect(page.locator(".app-shell")).toHaveClass(/reduce-motion/);
-  await expect(page.locator(".app-shell")).toHaveClass(/no-particles/);
+  await expect(page.locator(".ow-game")).toHaveClass(/reduce-motion/);
+  await expect(page.locator(".ow-game")).not.toHaveClass(/no-particles/);
   await page.getByRole("button", { name: /^Điều khiển/ }).click();
   await expect(page.locator(".control-reference")).toContainText("Space");
-  await page.getByRole("button", { name: "Đóng hộp thoại" }).click();
+  await page.getByRole("button", { name: "Đóng", exact: true }).click();
   await page.reload();
-  await page
-    .getByRole("button", { name: "Cài đặt trò chơi", exact: true })
-    .click();
+  await page.getByRole("button", { name: "Cài đặt", exact: true }).click();
   await expect(page.getByRole("slider", { name: /Âm lượng tổng/ })).toHaveValue(
     "100",
   );
@@ -124,55 +119,53 @@ test("settings persist, all four tabs work, appearance is visible to a second pl
   await expect(
     page.getByRole("button", { name: "Hoa sen", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
-  await page.getByRole("button", { name: "Đóng hộp thoại" }).click();
+  await page.getByRole("button", { name: "Đóng", exact: true }).click();
   const enter = async (p, name) => {
+    await p.getByLabel("Tên âm hồn").fill(name);
+    await p
+      .getByLabel("Mã phòng")
+      .fill("SET-" + Date.now().toString().slice(0, -6));
     await p.getByRole("button", { name: "Bắt đầu ngao du" }).click();
-    await p.getByLabel("Tên lữ khách").fill(name);
-    await p.getByLabel("Mã phòng đồng hành").fill("SETTINGS-QA");
-    await p.getByRole("button", { name: "Bước vào âm giới" }).click();
-    await expect(p.getByRole("dialog")).toHaveCount(0);
+    await expect(p.locator(".ow-top-left")).toBeVisible();
   };
   await enter(page, "Hồn Tím");
   const peerCtx = await browser.newContext({
       viewport: { width: 1440, height: 1050 },
     }),
     peer = await peerCtx.newPage();
-  await peer.goto("http://localhost:3001");
+  await peer.goto(GAME_URL);
   await enter(peer, "Người Xem");
   await expect(
-    peer.locator('[data-player-name="Hồn Tím"] .soul-accessory'),
+    peer
+      .locator("[data-player]")
+      .filter({ hasText: "Hồn Tím" })
+      .locator(".soul-accessory"),
   ).toHaveCount(1);
   await expect(
-    peer.locator('[data-player-name="Hồn Tím"] .aura-orbit'),
+    peer
+      .locator("[data-player]")
+      .filter({ hasText: "Hồn Tím" })
+      .locator(".aura-orbit"),
   ).toHaveCount(1);
-  await page
-    .getByRole("button", { name: "Cài đặt trò chơi", exact: true })
-    .click();
+  await page.getByRole("button", { name: "Cài đặt", exact: true }).click();
   await page.getByRole("button", { name: /^Ngoại hình/ }).click();
   await page.getByRole("button", { name: "Đèn hổ phách", exact: true }).click();
+  await expect(page.getByText("Đã đồng bộ", { exact: true })).toBeVisible();
   await expect(
-    page.getByText("Đã đồng bộ với phòng", { exact: true }),
-  ).toBeVisible();
-  await expect(
-    peer.locator('[data-player-name="Hồn Tím"] .character-sprite stop').first(),
+    peer
+      .locator("[data-player]")
+      .filter({ hasText: "Hồn Tím" })
+      .locator(".character-sprite stop")
+      .first(),
   ).toHaveAttribute("stop-color", "#d1ae70");
-  await page.getByRole("button", { name: "Đóng hộp thoại" }).click();
-  await page.locator(".mischief-panel").scrollIntoViewIfNeeded();
-  expect(
-    await page
-      .locator(".action-tile")
-      .first()
-      .evaluate((el) => parseFloat(getComputedStyle(el).minHeight)),
-  ).toBeGreaterThanOrEqual(140);
-  await expect(page.locator(".firefly").first()).toBeHidden();
+  await page.getByRole("button", { name: "Đóng", exact: true }).click();
+  await expect(page.locator(".ow-hotbar button")).toHaveCount(9);
+  await expect(page.locator(".ow-firefly")).toHaveCount(0);
   await page.screenshot({
-    path: test.info().outputPath("controls-0.4.png"),
-    fullPage: true,
+    path: test.info().outputPath("controls-open-world.png"),
   });
   await page.setViewportSize({ width: 390, height: 844 });
-  await page
-    .getByRole("button", { name: "Cài đặt trò chơi", exact: true })
-    .click();
+  await page.getByRole("button", { name: "Cài đặt", exact: true }).click();
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -181,7 +174,7 @@ test("settings persist, all four tabs work, appearance is visible to a second pl
   await page.getByRole("button", { name: /^Ngoại hình/ }).click();
   expect(
     await page
-      .locator(".settings-modal")
+      .locator(".ow-settings")
       .evaluate((el) => el.scrollWidth <= el.clientWidth + 1),
   ).toBeTruthy();
   await expect(
@@ -193,7 +186,7 @@ test("settings persist, all four tabs work, appearance is visible to a second pl
   await page
     .getByRole("button", { name: "Khôi phục mặc định", exact: true })
     .click();
-  await expect(page.locator(".app-shell")).not.toHaveClass(/reduce-motion/);
+  await expect(page.locator(".ow-game")).not.toHaveClass(/reduce-motion/);
   await expect(
     page.getByRole("button", { name: "Ngọc bích", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");

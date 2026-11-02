@@ -1,3 +1,10 @@
+import {
+  MAP,
+  regionFor,
+  near as isNear,
+  clearSegment,
+  pointKey,
+} from "../shared/exploration";
 import { randomBytes, randomUUID, createHash } from "node:crypto";
 import {
   existsSync,
@@ -27,6 +34,10 @@ type Save = {
   completed: number[];
   cycles?: number;
   appearance?: SoulAppearance;
+  region?: number;
+  visited?: number[];
+  discoveries?: string[];
+  sparks?: number;
 };
 type Room = {
   players: Map<string, Player>;
@@ -141,11 +152,17 @@ export function attachGame(io: Server, savePath: string) {
         name,
         x: WORLD.spawn.x,
         y: WORLD.spawn.y,
-        floor: 1,
+        floor:
+          save.region && save.region >= 1 && save.region <= 18
+            ? save.region
+            : 1,
+        visited: [...new Set([1, ...(save.visited || save.completed)])],
+        discoveries: save.discoveries || [],
+        sparks: save.sparks || 0,
         color: ["#d9bc78", "#8fc4b1", "#bba1d1", "#8cbad6"][
           room.players.size % 4
         ],
-        maxFloor: save.maxFloor,
+        maxFloor: 18,
         completed: [...save.completed],
         cycles: save.cycles || 0,
         appearance: normalizeAppearance(
@@ -158,6 +175,8 @@ export function attachGame(io: Server, savePath: string) {
           ? (p.team as Team)
           : undefined;
       room.engine.join(player, chosenTeam);
+      if (!player.visited!.includes(player.floor))
+        player.visited!.push(player.floor);
       room.players.set(socket.id, player);
       active.set(key, socket.id);
       socket.join(roomId);
@@ -181,8 +200,9 @@ export function attachGame(io: Server, savePath: string) {
       if (distance > limit) return;
       lastMove = now;
       const previous = { x: player.x, y: player.y };
-      player.x = Math.max(150, Math.min(850, x));
-      player.y = Math.max(140, Math.min(590, y));
+      if (!clearSegment(regionFor(player.floor), player, { x, y })) return;
+      player.x = x;
+      player.y = y;
       room.engine.moved(player, previous);
       emit();
     });
@@ -200,6 +220,10 @@ export function attachGame(io: Server, savePath: string) {
         completed: [...player.completed],
         cycles: player.cycles || 0,
         appearance,
+        region: player.floor,
+        visited: player.visited,
+        discoveries: player.discoveries,
+        sparks: player.sparks,
       };
       try {
         persist();
@@ -225,125 +249,135 @@ export function attachGame(io: Server, savePath: string) {
       });
       emit();
     });
-    const near = (target: { x: number; y: number }) =>
-      player && Math.hypot(player.x - target.x, player.y - target.y) < 100;
-    socket.on("interact", (input: unknown) => {
-      if (
-        !player ||
-        !room ||
-        limited() ||
-        typeof input !== "number" ||
-        !Number.isInteger(input) ||
-        !WORLD.lanterns[input]
-      )
-        return;
-      if (!room.engine.canLeave(player))
-        return notice("Đang ngã, choáng hoặc kéo người, chưa thể thắp đèn.");
-      if (!near(WORLD.lanterns[input])) return notice("Hãy đến gần đèn hơn.");
-      const lamps = room.lanterns.get(player.floor) || [false, false];
-      if (lamps[input]) return;
-      lamps[input] = true;
-      room.lanterns.set(player.floor, lamps);
-      tell(`${player.name} thắp đèn ${input + 1} ở tầng ${player.floor}.`);
-      emit();
-    });
-    socket.on("answer", (answer: unknown) => {
-      if (!player || !room || limited()) return;
-      if (!room.engine.canLeave(player))
-        return notice("Hồi hồn hoặc thả người trước khi đối thoại.");
-      if (!near(WORLD.npc)) return notice("Hãy đến gần Dẫn hồn sứ để giải ấn.");
-      if (
-        !(room.lanterns.get(player.floor) || []).every(Boolean) ||
-        (room.lanterns.get(player.floor) || []).length !== 2
-      )
-        return notice("Thắp cả hai đèn dẫn hồn trước.");
-      if (answer !== floors[player.floor - 1].answer)
-        return notice("Hãy nghĩ thêm về lòng trắc ẩn. Bạn có thể thử lại.");
-      if (!player.completed.includes(player.floor)) {
-        player.completed.push(player.floor);
-        player.maxFloor = Math.min(
-          18,
-          Math.max(player.maxFloor, player.floor + 1),
-        );
-        saves[key] = {
-          name: player.name,
-          maxFloor: player.maxFloor,
-          completed: player.completed,
-          cycles: player.cycles || 0,
-          appearance: player.appearance,
-        };
+    const saveProgress = () => {
+      if (!player) return;
+      const previousSave = saves[key];
+      saves[key] = {
+        name: player.name,
+        maxFloor: 18,
+        completed: player.completed,
+        cycles: player.cycles,
+        appearance: player.appearance,
+        region: player.floor,
+        visited: player.visited,
+        discoveries: player.discoveries,
+        sparks: player.sparks,
+      };
+      try {
         persist();
+        return true;
+      } catch {
+        saves[key] = previousSave;
+        notice(
+          "Chưa ghi được tiến độ vào ổ đĩa. Hãy kiểm tra quyền ghi của máy chủ.",
+        );
+        return false;
       }
-      notice(
-        player.floor === 18
-          ? "Bạn đã hoàn thành 18 tầng. Cổng trở về đang chờ!"
-          : "Ấn đã mở. Đến cổng phía bắc để xuống tầng tiếp theo.",
+    };
+    const travel = (destination: number) => {
+      if (!player || !room) return;
+      const portal = regionFor(player.floor).landmarks.find(
+        (l) =>
+          l.kind === "portal" && l.target === destination && isNear(player!, l),
       );
-      emit();
-    });
-    socket.on("travel", (floor: unknown) => {
-      if (
-        !player ||
-        !room ||
-        limited() ||
-        typeof floor !== "number" ||
-        !Number.isInteger(floor) ||
-        floor < 1 ||
-        floor > player.maxFloor
-      )
-        return notice("Tầng này chưa được mở.");
-      if (floor === player.floor) return;
+      if (!portal) return notice("Hãy đi tới đúng cổng nối vùng trên bản đồ.");
       if (!room.engine.canLeave(player))
-        return notice("Phải tỉnh táo và thả người trước khi đổi tầng.");
-      if (floor > player.floor && !near(WORLD.gate))
-        return notice("Hãy đến cổng phía bắc để xuống tầng.");
-      player.floor = floor;
+        return notice("Hãy hồi hồn và thả người trước khi qua cổng.");
+      player.floor = destination;
       player.x = WORLD.spawn.x;
       player.y = WORLD.spawn.y;
+      if (!player.visited!.includes(destination))
+        player.visited!.push(destination);
       room.engine.join(player, player.team);
       lastMove = Date.now();
+      saveProgress();
+      notice(
+        "Đã đến " +
+          floors[destination - 1].name +
+          ". Bạn có thể khám phá theo hướng bất kỳ.",
+      );
+      emit();
+    };
+    socket.on("travel", (destination: unknown) => {
+      if (
+        limited() ||
+        typeof destination !== "number" ||
+        !Number.isInteger(destination) ||
+        destination < 1 ||
+        destination > 18
+      )
+        return;
+      travel(destination);
+    });
+    socket.on("interact", (id: unknown) => {
+      if (!player || !room || limited() || typeof id !== "string") return;
+      const place = regionFor(player.floor).landmarks.find((l) => l.id === id);
+      if (!place || !isNear(player, place))
+        return notice("Hãy đến gần địa điểm để tương tác.");
+      if (!room.engine.canLeave(player))
+        return notice("Hãy hồi hồn và thả người trước khi tương tác.");
+      if (place.kind === "portal") return travel(place.target!);
+      const discovery = pointKey(player.floor, place.id);
+      const fresh = !player.discoveries!.includes(discovery);
+      if (fresh) {
+        player.discoveries!.push(discovery);
+        player.sparks =
+          (player.sparks || 0) + (place.kind === "cache" ? 25 : 5);
+      }
+      if (place.kind === "rest" || place.id === "camp") {
+        if (player.soul) {
+          player.soul.energy = 100;
+          player.soul.immuneUntil = Date.now() + 3000;
+        }
+      }
+      if (place.kind === "cache")
+        notice(
+          fresh
+            ? "Mở rương: +25 đốm hồn! Tiến độ được lưu riêng cho bạn."
+            : "Bạn đã tìm thấy rương này. Thử tìm một góc khác!",
+        );
+      else if (place.kind === "shrine")
+        socket.emit("dialog", {
+          name: place.name + " · " + floors[player.floor - 1].name,
+          text:
+            floors[player.floor - 1].meaning +
+            " " +
+            floors[player.floor - 1].reflection,
+        });
+      else if (place.kind === "npc")
+        socket.emit("dialog", {
+          name: place.name,
+          text: place.description,
+          rebirth: player.floor === 18 && place.id === "camp",
+        });
+      else notice(place.description + (fresh ? " +5 đốm hồn." : ""));
+      saveProgress();
       emit();
     });
     socket.on("reincarnate", () => {
       if (!player || !room || limited()) return;
-      if (!room.engine.canLeave(player))
-        return notice("Hồi hồn và thả người trước khi mở lượt mới.");
       if (
         player.floor !== 18 ||
-        !near(WORLD.gate) ||
-        !floors.every((f) => player!.completed.includes(f.id))
+        !isNear(player, MAP.camp) ||
+        !room.engine.canLeave(player)
       )
-        return notice("Cần đủ 18 ấn và đến cổng tầng 18 để mở lượt mới.");
-      const next = {
-        name: player.name,
-        maxFloor: 1,
-        completed: [] as number[],
-        cycles: (player.cycles || 0) + 1,
-        appearance: player.appearance,
-      };
-      // Persist first: if the disk write fails, the current journey stays intact.
-      const previous = saves[key];
-      saves[key] = next;
-      try {
-        persist();
-      } catch {
-        saves[key] = previous;
-        return notice(
-          "Chưa lưu được vòng mới. Hành trình hiện tại được giữ nguyên.",
-        );
-      }
-      player.completed = [];
-      player.maxFloor = 1;
+        return notice("Hãy gặp Mạnh Bà ở trạm nghỉ vùng 18 khi đã hồi hồn.");
+      const previous = { ...player };
+      player.cycles = (player.cycles || 0) + 1;
       player.floor = 1;
-      player.cycles = next.cycles;
+      if (!saveProgress()) {
+        Object.assign(player, previous);
+        return;
+      }
       player.x = WORLD.spawn.x;
       player.y = WORLD.spawn.y;
       room.engine.join(player, player.team);
       lastMove = Date.now();
       tell(
-        `${player.name} vừa đi trọn một vòng và bắt đầu lượt ngao du ${next.cycles + 1}.`,
+        player.name +
+          " trở lại Quỷ Môn Quan. Kỷ vật và khám phá vẫn còn nguyên.",
       );
-      socket.emit("reincarnated", { cycles: next.cycles });
+      socket.emit("reincarnated", { cycles: player.cycles });
       emit();
     });
     socket.on("chat", (value: unknown) => {

@@ -1,14 +1,13 @@
-# Giao diện và Cài đặt — 0.4
+# Giao diện và Cài đặt — 0.5
 
-Mở biểu tượng thanh trượt **Cài đặt trò chơi** ở góc phải trên. Khi mở rộng bản đồ, có nút cài đặt ngay trên thanh bản đồ. Các thay đổi áp dụng ngay; **Xong** hoặc **Esc** đóng bảng.
+Mở **Cài đặt** ở góc phải của HUD. Nội dung áp dụng ngay; Xong hoặc Esc đóng bảng. Cài đặt vẫn có thể mở trước khi vào phòng.
 
 ## Hệ thống nút
 
-- Bảng điều khiển chia thành **Quậy phá & khống chế** và **Phòng thủ & đồ nghề**.
-- Mỗi chiêu có biểu tượng, tên, phím tắt, thể lực, trạng thái khả dụng. Chiêu đang hồi hiển thị thời gian còn lại và thanh tiến độ.
-- Nút khóa nêu lý do: chưa chọn mục tiêu, ở quá xa, chưa choáng, đang kéo, chưa vào vòng ném, đang được bảo vệ, thiếu thể lực hoặc đang hồi chiêu.
-- Mục tiêu đang chọn có viền nổi bật. Có nút đi tới mục tiêu / đưa tới vòng ném; vùng nghỉ, dây kéo, màu phe và trạng thái vẫn tách khỏi diện mạo.
-- Thanh điều hướng điện thoại có một hàng riêng, nút cài đặt luôn có thể tìm được. Bảng cài đặt cuộn phần nội dung, giữ điều hướng và nút hoàn tất.
+- Chín chiêu trong thanh kỹ năng, có biểu tượng, phím, thể lực và thời gian hồi.
+- Nút không khả dụng khi chưa chọn mục tiêu, chưa tới gần, chưa gây choáng, thiếu thể lực hoặc đang được bảo hộ. Di chuột để xem điều kiện.
+- Chạm vào vong để chọn, mục tiêu có viền và bảng trạng thái. Di chuyển tới sân bằng phím, chạm cảnh hoặc bản đồ nhỏ.
+- Điện thoại có cần điều khiển và thanh chiêu ba hàng; các chức năng bản đồ, hội, sổ tay, cài đặt và hướng dẫn vẫn nằm trên HUD.
 
 ## Âm thanh
 

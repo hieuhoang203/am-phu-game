@@ -12,7 +12,6 @@ export type CharacterKind =
 export interface CharacterModel {
   id: string;
   name: string;
-  han: string;
   kind: CharacterKind;
   color: string;
   skin: string;
@@ -34,23 +33,10 @@ const courtNames = [
   "Bình Đẳng Vương",
   "Chuyển Luân Vương",
 ];
-const courtHan = [
-  "秦廣王",
-  "楚江王",
-  "宋帝王",
-  "五官王",
-  "閻羅王",
-  "卞城王",
-  "泰山王",
-  "都市王",
-  "平等王",
-  "轉輪王",
-];
 export const characters: CharacterModel[] = [
   {
     id: "quy-su",
     name: "Quỷ sứ",
-    han: "鬼卒",
     kind: "demon",
     color: "#bb6e4e",
     skin: "#75a38b",
@@ -63,7 +49,6 @@ export const characters: CharacterModel[] = [
   {
     id: "nguu-dau",
     name: "Ngưu Đầu",
-    han: "牛頭",
     kind: "ox",
     color: "#86624b",
     skin: "#8d897d",
@@ -75,7 +60,6 @@ export const characters: CharacterModel[] = [
   {
     id: "ma-dien",
     name: "Mã Diện",
-    han: "馬面",
     kind: "horse",
     color: "#6f859b",
     skin: "#bd9a78",
@@ -87,7 +71,6 @@ export const characters: CharacterModel[] = [
   {
     id: "hac-vo-thuong",
     name: "Hắc Vô Thường",
-    han: "黑無常",
     kind: "black",
     color: "#343d4d",
     skin: "#819b9b",
@@ -100,7 +83,6 @@ export const characters: CharacterModel[] = [
   {
     id: "bach-vo-thuong",
     name: "Bạch Vô Thường",
-    han: "白無常",
     kind: "white",
     color: "#ded9c2",
     skin: "#d5d3b7",
@@ -112,7 +94,6 @@ export const characters: CharacterModel[] = [
   {
     id: "phan-quan",
     name: "Phán quan",
-    han: "判官",
     kind: "judge",
     color: "#55766b",
     skin: "#c3a282",
@@ -124,7 +105,6 @@ export const characters: CharacterModel[] = [
   {
     id: "manh-ba",
     name: "Mạnh Bà",
-    han: "孟婆",
     kind: "mengpo",
     color: "#916f94",
     skin: "#d5b596",
@@ -137,7 +117,6 @@ export const characters: CharacterModel[] = [
   {
     id: "dia-tang",
     name: "Địa Tạng Bồ Tát",
-    han: "地藏菩薩",
     kind: "dizang",
     color: "#b99053",
     skin: "#d8bc95",
@@ -150,7 +129,6 @@ export const characters: CharacterModel[] = [
   {
     id: "vong-hon",
     name: "Vong hồn",
-    han: "亡魂",
     kind: "soul",
     color: "#9ec8bc",
     skin: "#c5ded2",
@@ -162,7 +140,6 @@ export const characters: CharacterModel[] = [
   ...courtNames.map((name, i): CharacterModel => ({
     id: `king-${i + 1}`,
     name,
-    han: courtHan[i],
     kind: "king",
     court: i + 1,
     color: [
@@ -392,42 +369,36 @@ export const realms = [
   {
     id: "deva",
     name: "Thiên",
-    han: "天",
     color: "#d8bc77",
     meaning: "Cõi trời; vẫn thuộc vòng sinh tử.",
   },
   {
     id: "asura",
     name: "A-tu-la",
-    han: "修羅",
     color: "#c2856d",
     meaning: "Cõi a-tu-la, thường gắn với tranh đấu.",
   },
   {
     id: "human",
     name: "Nhân",
-    han: "人",
     color: "#9cbd8d",
     meaning: "Cõi người.",
   },
   {
     id: "animal",
     name: "Súc sinh",
-    han: "畜生",
     color: "#9fadd0",
     meaning: "Cõi loài vật.",
   },
   {
     id: "preta",
     name: "Ngạ quỷ",
-    han: "餓鬼",
     color: "#c09bca",
     meaning: "Cõi quỷ đói.",
   },
   {
     id: "hell",
     name: "Địa ngục",
-    han: "地獄",
     color: "#c67c6c",
     meaning: "Cảnh giới chịu khổ; không đồng nghĩa hình phạt vĩnh viễn.",
   },
@@ -441,7 +412,7 @@ export const rebirthSteps = [
   {
     title: "Các ngục theo nghiệp",
     detail:
-      "Các cảnh hình phạt thuộc dị bản dân gian. Lộ trình thăm đủ 18 tầng là cách tổ chức game.",
+      "Các cảnh hình phạt thuộc dị bản dân gian. Các vùng có thể được ghé thăm theo nhiều hướng; đó là cách chuyển thể trong game.",
   },
   {
     title: "Chuyển Luân định đường",

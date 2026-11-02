@@ -36,7 +36,7 @@ for (const f of floors) {
         fontFamily="serif"
         fontSize="17"
       >
-        {f.han}地獄
+        TẦNG {String(f.id).padStart(2, "0")}
       </text>
     </svg>,
   );
@@ -52,7 +52,7 @@ writeFileSync(
     floors
       .map(
         (f) =>
-          `## ${f.id}. ${f.name} — ${f.han}\n\n![Minh họa gốc: ${f.motif}](../public/models/punishments/floor-${String(f.id).padStart(2, "0")}.svg)\n\n- Hình tượng định danh: ${f.motif}.\n- Chủ đề trong dị bản tiếng Việt S6: ${f.traditional}. Không phải luật phán xét của game.\n- Ý nghĩa theo dị bản: ${f.meaning}\n- Bài học chuyển thể: ${f.reflection}\n- Cảnh hình phạt: ${punishments[f.id - 1].title}. ${punishments[f.id - 1].description}\n- Thành phần thiết kế: ${f.elements.join(", ")}.\n- Câu hỏi tương tác: ${f.question}\n- Gợi ý đáp án: ${f.choices[f.answer]}.\n`,
+          `## ${f.id}. ${f.name}\n\n![Minh họa gốc: ${f.motif}](../public/models/punishments/floor-${String(f.id).padStart(2, "0")}.svg)\n\n- Hình tượng định danh: ${f.motif}.\n- Chủ đề trong dị bản tiếng Việt S6: ${f.traditional}. Không phải luật phán xét của game.\n- Ý nghĩa theo dị bản: ${f.meaning}\n- Bài học chuyển thể: ${f.reflection}\n- Cảnh hình phạt: ${punishments[f.id - 1].title}. ${punishments[f.id - 1].description}\n- Thành phần thiết kế: ${f.elements.join(", ")}.\n- Khám phá tự do, tương tác trực tiếp tại địa điểm.\n`,
       )
       .join("\n"),
 );

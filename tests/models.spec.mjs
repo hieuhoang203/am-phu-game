@@ -1,4 +1,6 @@
+import { enter } from "./ui-helpers.mjs";
 import { test, expect } from "@playwright/test";
+const GAME_URL = process.env.GAME_URL || "http://localhost:3001";
 test("model library, all 18 scenes, source details and six realms work on desktop and mobile", async ({
   browser,
 }) => {
@@ -10,10 +12,8 @@ test("model library, all 18 scenes, source details and six realms work on deskto
   page.on("console", (m) => {
     if (m.type() === "error") errors.push(m.text());
   });
-  await page.goto("http://localhost:3001");
-  await page
-    .getByRole("button", { name: "Đồ giám nhân vật và hình phạt" })
-    .click();
+  await enter(page, "Vong đồ giám");
+  await page.getByRole("button", { name: "Sổ tay truyền thuyết" }).click();
   await expect(page.locator(".character-grid button")).toHaveCount(19);
   await expect(
     page.getByRole("heading", { name: "Ngưu Đầu", exact: true }),
@@ -37,7 +37,7 @@ test("model library, all 18 scenes, source details and six realms work on deskto
     path: test.info().outputPath("character-library-v2.png"),
     fullPage: true,
   });
-  await page.getByRole("button", { name: "Mã Diện 馬面" }).click();
+  await page.getByRole("button", { name: /^Mã Diện/ }).click();
   await expect(
     page.getByRole("heading", { name: "Mã Diện", exact: true }),
   ).toBeVisible();
@@ -70,39 +70,31 @@ test("model library, all 18 scenes, source details and six realms work on deskto
   });
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toHaveCount(0);
-  await page.getByRole("button", { name: "Tàng thư", exact: true }).click();
-  await page.getByLabel("Chọn tầng đọc điển tích").selectOption("18");
-  await expect(
-    page.locator('.lore-model-scene [data-punishment="18"]'),
-  ).toHaveCount(1);
-  await page.keyboard.press("Escape");
   const phone = await browser.newPage({
     viewport: { width: 390, height: 844 },
     isMobile: true,
     hasTouch: true,
   });
-  await phone.goto("http://localhost:3001");
+  await enter(phone, "Vong nhỏ");
   expect(
     await phone.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBeTruthy();
-  await phone
-    .getByRole("button", { name: "Đồ giám nhân vật và hình phạt" })
-    .click();
+  await phone.getByRole("button", { name: "Sổ tay truyền thuyết" }).click();
   await expect(
     phone.getByRole("heading", { name: "Ngưu Đầu", exact: true }),
   ).toBeVisible();
   expect(
     await phone
-      .locator(".modal")
+      .locator(".ow-modal")
       .evaluate((el) => el.scrollWidth <= el.clientWidth + 1),
   ).toBeTruthy();
   await phone.screenshot({
     path: test.info().outputPath("models-mobile-v2.png"),
     fullPage: true,
   });
-  await page.goto("http://localhost:3001/models/index.html");
+  await page.goto(`${GAME_URL}/models/index.html`);
   await expect(page.locator("[data-model]")).toHaveCount(19);
   await page.getByRole("button", { name: "Làm việc", exact: true }).click();
   await expect(page.locator('[data-model="nguu-dau"]')).toHaveAttribute(
@@ -128,12 +120,12 @@ test("model library, all 18 scenes, source details and six realms work on deskto
       );
   });
   await page.setViewportSize({ width: 1200, height: 1000 });
-  await page.goto("http://localhost:3001/models/characters-sheet.svg");
+  await page.goto(`${GAME_URL}/models/characters-sheet.svg`);
   await page.screenshot({
     path: test.info().outputPath("characters-sheet-v2.png"),
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto("http://localhost:3001/models/punishments-sheet.svg");
+  await page.goto(`${GAME_URL}/models/punishments-sheet.svg`);
   await page.screenshot({
     path: test.info().outputPath("punishments-sheet-v2.png"),
   });

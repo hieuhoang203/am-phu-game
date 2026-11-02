@@ -25,7 +25,7 @@ const once = <T>(s: Socket, event: string) =>
       resolve(data);
     });
   });
-test("raw sockets cannot move, solve, travel or reincarnate while stunned; disconnect frees a dragged victim", async () => {
+test("raw sockets cannot move, interact, travel or reincarnate while stunned; disconnect frees a dragged victim", async () => {
   const dir = mkdtempSync(join(tmpdir(), "prank-net-")),
     file = join(dir, "save.json"),
     token = "b".repeat(64),
@@ -96,8 +96,7 @@ test("raw sockets cannot move, solve, travel or reincarnate while stunned; disco
     await pause(100);
     assert.equal(wb.players.find((p) => p.id === b.id)!.x, before.x);
     for (const [event, data] of [
-      ["interact", 0],
-      ["answer", 0],
+      ["interact", "arena"],
       ["travel", 2],
       ["reincarnate", undefined],
     ] as const) {

@@ -100,7 +100,7 @@ export const prankRules: Record<
   },
   banana: {
     label: "Đặt vỏ chuối",
-    key: "V",
+    key: "B",
     cost: 22,
     cooldown: 9000,
     range: 0,
@@ -108,7 +108,7 @@ export const prankRules: Record<
   },
   disarm: {
     label: "Dọn bẫy",
-    key: "X",
+    key: "V",
     cost: 4,
     cooldown: 700,
     range: 55,
@@ -117,8 +117,10 @@ export const prankRules: Record<
 };
 export const MISCHIEF = {
   safeZones: [
+    { x: 240, y: 1550, radius: 65, name: "Bến Vong Xuyên" },
+    { x: 2450, y: 1450, radius: 65, name: "Khe nứt âm giới" },
     { x: 500, y: 550, radius: 58, name: "Điểm hồi hồn" },
-    { x: 500, y: 295, radius: 65, name: "Phán quan" },
+    { x: 500, y: 295, radius: 65, name: "Trạm nghỉ" },
     { x: 500, y: 155, radius: 65, name: "Cổng tầng" },
   ],
   trap: { x: 500, y: 450, radius: 100 },

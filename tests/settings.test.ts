@@ -68,15 +68,17 @@ test("appearance is broadcast, saved, validated and retained through reincarnati
     JSON.stringify({
       [key]: {
         name: "Look",
+        sparks: 75,
+        discoveries: ["18:ruin"],
         maxFloor: 18,
-        completed: Array.from({ length: 18 }, (_, i) => i + 1),
+        completed: [],
         appearance: original,
       },
     }),
   );
   const http = createServer(),
     io = new Server(http);
-  attachGame(io, file);
+  const { rooms } = attachGame(io, file);
   await new Promise<void>((r) => http.listen(0, "127.0.0.1", r));
   const url = `http://127.0.0.1:${(http.address() as { port: number }).port}`;
   const a = client(url, { transports: ["websocket"] }),
@@ -112,11 +114,13 @@ test("appearance is broadcast, saved, validated and retained through reincarnati
       JSON.parse(readFileSync(file, "utf8"))[key].appearance,
       changed,
     );
+    rooms.get("LOOK")!.players.get(a.id!)!.floor = 18;
+    await pause(120);
     const walk = async () => {
       for (let i = 0; i < 100; i++) {
         const p = world.players.find((p) => p.id === a.id)!;
         const dx = 500 - p.x,
-          dy = 155 - p.y,
+          dy = 295 - p.y,
           d = Math.hypot(dx, dy);
         if (d < 9) return;
         await pause(55);
@@ -129,12 +133,13 @@ test("appearance is broadcast, saved, validated and retained through reincarnati
       throw new Error("walk timed out");
     };
     await walk();
-    a.emit("travel", 18);
-    await pause(80);
-    await walk();
     const cycle = once(a, "reincarnated");
     a.emit("reincarnate");
     await cycle;
+    assert.equal(world.players.find((p) => p.id === a.id)?.sparks, 75);
+    assert.deepEqual(world.players.find((p) => p.id === a.id)?.discoveries, [
+      "18:ruin",
+    ]);
     await pause(70);
     assert.deepEqual(
       JSON.parse(readFileSync(file, "utf8"))[key].appearance,

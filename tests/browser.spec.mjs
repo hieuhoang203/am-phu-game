@@ -1,88 +1,114 @@
 import { test, expect } from "@playwright/test";
-test("desktop and mobile journey, two browser clients, no script injection", async ({
+import { GAME_URL, enter, at, walk } from "./ui-helpers.mjs";
+test("full-screen exploration, following camera, private loot, real portals and multiplayer chat", async ({
   browser,
 }) => {
-  const one = await browser.newContext({
-    viewport: { width: 1440, height: 1080 },
-  });
-  const two = await browser.newContext({
-    viewport: { width: 1440, height: 1080 },
-  });
-  const a = await one.newPage(),
-    b = await two.newPage();
-  const errors = [];
+  test.setTimeout(65000);
+  const ca = await browser.newContext({
+      viewport: { width: 1440, height: 900 },
+    }),
+    cb = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const a = await ca.newPage(),
+    b = await cb.newPage(),
+    errors = [];
   a.on("pageerror", (e) => errors.push(e.message));
   b.on("pageerror", (e) => errors.push(e.message));
-  await a.goto("http://localhost:3001");
-  await expect(
-    a.getByRole("heading", { name: "Bạt Thiệt Địa Ngục 拔舌" }),
-  ).toBeVisible();
-  await a.screenshot({
-    path: test.info().outputPath("desktop.png"),
-    fullPage: true,
-  });
-  const enter = async (page, name) => {
-    await page.goto("http://localhost:3001");
-    await page.getByRole("button", { name: "Bắt đầu ngao du" }).click();
-    await page.getByLabel("Tên lữ khách").fill(name);
-    await page.getByLabel("Mã phòng đồng hành").fill("BROWSER-QA");
-    await page.getByRole("button", { name: "Bước vào âm giới" }).click();
+  try {
+    await a.goto(GAME_URL);
+    await a.screenshot({ path: test.info().outputPath("welcome.png") });
+    const room = "BROW-" + Date.now();
+    await enter(a, "Mộc Miên", room);
+    await enter(b, "Thanh Vân", room, "B");
+    await expect(a.locator("[data-player]")).toHaveCount(2);
+    await a.screenshot({
+      path: test.info().outputPath("open-world-desktop.png"),
+    });
+    expect(await a.locator(".ow-game").boundingBox()).toEqual({
+      x: 0,
+      y: 0,
+      width: 1440,
+      height: 900,
+    });
+    expect(await a.locator("input[type=radio]").count()).toBe(0);
+    await a.getByRole("button", { name: "Trò chuyện cùng phòng" }).click();
+    await b.getByRole("button", { name: "Trò chuyện cùng phòng" }).click();
+    await a
+      .getByLabel("Tin nhắn", { exact: true })
+      .fill("<img src=x onerror=alert(1)>");
+    await a.getByRole("button", { name: "Gửi tin nhắn" }).click();
+    await expect(b.locator(".ow-chat-log")).toContainText(
+      "<img src=x onerror=alert(1)>",
+    );
+    await expect(b.locator(".ow-chat-log img")).toHaveCount(0);
+    await a.getByRole("button", { name: "Thu gọn trò chuyện" }).click();
+    const before = await a.locator(".ow-scene").getAttribute("data-camera");
+    await walk(a, 945, 880);
+    await expect
+      .poll(() => a.locator(".ow-scene").getAttribute("data-camera"))
+      .not.toBe(before);
+    await expect(a.locator(".ow-top-left")).toContainText("25 đốm hồn");
+    await expect(b.locator(".ow-top-left")).toContainText("0 đốm hồn");
+    await a.screenshot({ path: test.info().outputPath("roaming.png") });
+    await a.keyboard.press("m");
+    await expect(a.locator(".ow-atlas button")).toHaveCount(18);
+    await expect(a.locator(".ow-atlas button:disabled")).toHaveCount(0);
+    await a.screenshot({ path: test.info().outputPath("atlas.png") });
+    await a.locator(".ow-atlas button").nth(1).click();
+    await expect(a.locator(".ow-location>span")).toContainText("02 / 18", {
+      timeout: 25000,
+    });
+    await expect(a.locator(".ow-expedition")).toContainText("2/18");
+    await expect(b.locator(".ow-location>span")).toContainText("01 / 18");
+    await a.reload();
+    await enterAfterReload(a);
+    await expect(a.locator(".ow-location>span")).toContainText("02 / 18");
+    expect(errors).toEqual([]);
+  } finally {
+    await ca.close();
+    await cb.close();
+  }
+});
+async function enterAfterReload(page) {
+  await page.getByRole("button", { name: "Bắt đầu ngao du" }).click();
+  await expect(page.locator(".ow-top-left")).toBeVisible();
+}
+test("mobile touch movement, atlas and settings remain usable", async ({
+  browser,
+}) => {
+  const context = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      isMobile: true,
+      hasTouch: true,
+    }),
+    page = await context.newPage();
+  try {
+    await enter(page, "Vong bỏ túi");
+    const p = await at(page),
+      r = await page.locator(".ow-stick").boundingBox();
+    await page.mouse.move(r.x + r.width / 2, r.y + r.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(r.x + r.width - 8, r.y + r.height / 2);
+    await page.waitForTimeout(1000);
+    await page.mouse.up();
+    await expect
+      .poll(async () => Math.round((await at(page)).x))
+      .toBeGreaterThan(p.x + 80);
+    await page.screenshot({
+      path: test.info().outputPath("open-world-mobile.png"),
+    });
+    await page
+      .getByRole("button", { name: "Bản đồ âm giới", exact: true })
+      .click();
+    await expect(page.locator(".ow-atlas button")).toHaveCount(18);
+    await page.getByRole("button", { name: "Đóng", exact: true }).click();
+    await page.getByRole("button", { name: "Cài đặt", exact: true }).click();
+    await page.getByRole("button", { name: "Ngoại hình", exact: true }).click();
+    await page.screenshot({
+      path: test.info().outputPath("mobile-appearance.png"),
+    });
+    await page.getByRole("button", { name: "Xong", exact: true }).click();
     await expect(page.getByRole("dialog")).toHaveCount(0);
-  };
-  await enter(a, "Mộc Miên");
-  await enter(b, "Thanh Vân");
-  await expect(a.getByText("2 linh hồn tại tầng này")).toBeVisible();
-  await a.getByLabel("Tin nhắn đồng hành").fill("<img src=x onerror=alert(1)>");
-  await a.getByRole("button", { name: "Gửi tin nhắn", exact: true }).click();
-  await expect(
-    b.getByText("<img src=x onerror=alert(1)>", { exact: true }),
-  ).toBeVisible();
-  expect(await b.locator(".chat-messages img").count()).toBe(0);
-  await a.getByRole("button", { name: "Thắp đèn bên tả" }).click();
-  await b.getByRole("button", { name: "Thắp đèn bên hữu" }).click();
-  await expect(a.getByText("Đã thắp sáng", { exact: true })).toHaveCount(2, {
-    timeout: 15000,
-  });
-  await a.getByRole("button", { name: "Đối thoại với Dẫn hồn sứ" }).click();
-  await expect(a.getByRole("dialog")).toBeVisible({ timeout: 15000 });
-  await a.getByRole("button", { name: "A Kiểm chứng trước khi kể" }).click();
-  await expect(a.getByText("Ấn ký đã được trao.")).toBeVisible();
-  await a.getByRole("button", { name: "Đi đến cổng" }).click();
-  await expect(
-    a.getByRole("heading", { name: "Tiễn Đao Địa Ngục 剪刀" }),
-  ).toBeVisible({ timeout: 15000 });
-  await a.reload();
-  await a.getByRole("button", { name: "Bắt đầu ngao du" }).click();
-  await a.getByRole("button", { name: "Bước vào âm giới" }).click();
-  await expect(a.locator(".sidebar-footer b")).toHaveText("1/18");
-  await a.getByRole("button", { name: "Tàng thư", exact: true }).click();
-  await a.getByLabel("Chọn tầng đọc điển tích").selectOption("18");
-  await expect(
-    a.getByRole("heading", { name: "Đao Cưa · 刀锯" }),
-  ).toBeVisible();
-  await a.getByRole("button", { name: "Đóng hộp thoại" }).click();
-  await a.screenshot({
-    path: test.info().outputPath("multiplayer.png"),
-    fullPage: true,
-  });
-  const mobile = await browser.newContext({
-    viewport: { width: 390, height: 844 },
-    isMobile: true,
-    hasTouch: true,
-  });
-  const phone = await mobile.newPage();
-  await phone.goto("http://localhost:3001");
-  expect(
-    await phone.evaluate(
-      () => document.documentElement.scrollWidth <= innerWidth,
-    ),
-  ).toBeTruthy();
-  await phone.screenshot({
-    path: test.info().outputPath("mobile.png"),
-    fullPage: true,
-  });
-  expect(errors).toEqual([]);
-  await one.close();
-  await two.close();
-  await mobile.close();
+  } finally {
+    await context.close();
+  }
 });

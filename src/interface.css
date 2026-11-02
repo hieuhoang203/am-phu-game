@@ -1475,3 +1475,30 @@
 .interface-v4.large-controls .quest-list button {
   min-height: 51px;
 }
+
+.interface-v4 .brand-seal {
+  font-size: 17px;
+  letter-spacing: -1px;
+  font-family: "Be Vietnam Pro", sans-serif;
+  font-weight: 600;
+}
+.map-caption > span {
+  font:
+    600 10px/31px "Be Vietnam Pro",
+    sans-serif;
+  letter-spacing: 1px;
+}
+.map-caption > div {
+  font-size: 14px;
+  letter-spacing: 0.7px;
+}
+.seal-small {
+  font:
+    600 11px "Be Vietnam Pro",
+    sans-serif;
+}
+.chapter-mark {
+  font-variant-numeric: tabular-nums;
+  font-size: 100px;
+  letter-spacing: -8px;
+}

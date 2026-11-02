@@ -1,54 +1,40 @@
-# Vong hồn quậy phá — bản 0.3
+# Gameplay 0.5 — Thế giới mở âm giới
 
-Người vào phòng luôn là vong hồn. Mỗi phòng có tối đa 16 người, cùng khám phá đủ 18 tầng với tiến trình ấn riêng. Chọn phe A/B/C hoặc tự chia đều; cùng mã phòng để các phe gặp nhau. Các đội vẫn có thể trêu người cùng phe. Trò chơi dùng khống chế ngắn và hồi hồn, không có chết vĩnh viễn hay mất ấn.
+## Mục tiêu trải nghiệm
 
-## Chuỗi tương tác
+Vào vai vong hồn và tự chọn đường ngao du. Không có bài hỏi đáp, nhiệm vụ bắt buộc hay mở khóa tầng. Cảm giác chính là đi cùng bạn bè, lạc đường, tìm một rương hay cư dân thú vị, rồi bày trò với nhóm khác.
 
-`Tự do → gõ đầu hai lần → choáng → bị kéo → vào sân hình phạt → hồi hồn`
+## Không gian và khám phá
 
-- Đẩy gây **ngã**, không đủ điều kiện để kéo. Hai cú gõ trong 4 giây mới gây **choáng** 5 giây.
-- Chỉ người tự do, hai tay trống mới kéo được người đang choáng ở gần. Người kéo còn 56% tốc độ, không dùng chiêu khác ngoài thả / ném. Kéo không gia hạn thời gian choáng; phải đưa đến sân trước khi đối phương tỉnh.
-- Ném cần đang giữ một vong và đứng cách tâm sân `(500,450)` không quá 100 đơn vị. Cảnh giữ người 2,2–3,2 giây tùy tầng, rồi đưa về điểm hồi hồn. Băng Sơn và Huyết Trì để lại hiệu ứng chậm ngắn.
-- Người khác có thể cứu vong ngã, choáng, bị kéo hoặc đang dính hình phạt. Cứu cắt liên kết kéo và cho 3 giây miễn nhiễm. Ba lần vùng vẫy thoát kéo; mỗi lần cũng giảm thời gian khống chế 0,85 giây.
-- Ngã / choáng / bị kéo / dính hình phạt không thể đi, thắp đèn, giải ấn, đổi tầng hoặc mở lượt mới. Người đang kéo cũng phải thả trước khi làm nhiệm vụ / qua cổng.
+18 vùng, mỗi vùng 2.800 × 1.900 đơn vị. Mỗi vùng có ba cạnh trong đồ thị cổng: kế tiếp, trước đó và cách sáu vùng, có vòng nối 18 → 1. Cổng ở các điểm khác nhau; người chơi phải thật sự tới gần. Đây là tổ chức không gian của game, không phải khẳng định địa lý hay thứ tự luân hồi trong tín ngưỡng.
 
-## Các chiêu
+Mỗi vùng có trạm nghỉ, sân hình phạt theo truyền thuyết, quỷ sứ gác đường, đài ký ức, phế tích và ba rương. Va chạm kiểm tra cây và đá; vong có thể lướt trên mặt nước. Tìm đường dùng cùng dữ liệu vật cản ở máy khách và máy chủ. Chạm một địa điểm sẽ tới rồi tương tác; E là cách tương tác khi tự đi tới.
 
-| Phím | Chiêu | Điều kiện / tác dụng | Thể lực | Hồi chiêu |
-| --- | --- | --- | --- | --- |
-| F | Đẩy ngã | Tầm 70, văng 55, ngã 1,2 giây | 18 | 2,8 giây |
-| G | Gõ đầu | Tầm 65, tích 2 cú trong 4 giây gây choáng | 24 | 1,1 giây |
-| R | Kéo / thả | Tầm 70, chỉ kéo vong choáng; R lần nữa để thả | 10 / 0 | 0,8 / 0,35 giây |
-| T | Ném vào hình phạt | Đang kéo, ở trong vòng ném | 20 | 5 giây |
-| Q | Đỡ đòn | Thủ 1,8 giây, phản một cú đẩy / gõ khiến đối phương ngã; tốc độ còn 65% | 15 | 4,5 giây |
-| C | Cứu vong | Tầm 85, giải khống chế, cắt dây kéo | 15 | 3,5 giây |
-| Space | Vùng vẫy | Khi bị khống chế; giảm thời gian, ba lần thoát kéo | 10 | 0,65 giây |
-| V | Vỏ chuối | Đặt trước mặt, tồn tại 15 giây, tối đa 6 bẫy / tầng | 22 | 9 giây |
-| X | Dọn bẫy | Dọn vỏ chuối gần nhất trong tầm 55 | 4 | 0,7 giây |
+Các vùng có màu, biểu tượng và hoạt cảnh riêng. Nội dung các đài / phế tích lấy ý nghĩa đã đối chiếu trong danh mục 18 tầng. Sổ tay trình bày nhân vật, thành phần cảnh phạt và lục đạo. Sổ tay là nội dung đọc tùy chọn, không khóa gameplay.
 
-Thể lực tối đa 100, hồi 10/giây. Bẫy có thể làm chính chủ trượt sau một giây. Người đi nhanh qua bẫy vẫn bị kiểm tra trên cả đoạn di chuyển; không chỉ kiểm tra vị trí cuối.
+Rương +25 đốm hồn, địa điểm khác +5 lần đầu. Chỉ số này là vật sưu tầm, chưa có cửa hàng. Mỗi người lưu dấu khám phá riêng, không tranh mất phần thưởng của nhau. Mạnh Bà tại trạm vùng 18 cho quay về đầu, tăng số vòng và giữ tiến độ sưu tầm.
 
-## Phản công và hồi phục
+## Tương tác giữa các vong
 
-- Ba vùng nghỉ: điểm hồi hồn, Phán quan, cổng tầng. Cấm bắt đầu đòn / kéo vào người trong vùng nghỉ; không đặt bẫy ở đó. Đưa người đang kéo vào vùng nghỉ sẽ giải phóng họ.
-- Mới vào / sang tầng có 2,5 giây hào quang; sau thoát khống chế có 3 giây. Người có hào quang cũng không đánh / kéo người khác trong thời gian này.
-- Không đánh chồng thêm khi nạn nhân đã bị khống chế. Người đang giữ một vong sẽ buông nếu chính mình bị hạ. Rời mạng dọn hai đầu dây kéo và bẫy của người rời.
-- Cứu được cả phe khác để tạo tình huống hợp tác / phản bội tức thời. Không có khóa giữ vĩnh viễn; nếu không ai giúp thì thời gian giữ vẫn tự hết.
+| Hành động | Điều kiện và kết quả |
+| --- | --- |
+| Đẩy F | Gần 70 bước, làm ngã 1,2 giây; ngã không đủ điều kiện kéo |
+| Gõ G | Hai cú trong 4 giây, cách nhau hồi chiêu 1,1 giây, gây choáng 5 giây |
+| Kéo R | Chỉ vong đang choáng, gần 70 bước; người kéo đi còn 56% tốc độ |
+| Thả R | Buông vong đang kéo; không được mang người qua cổng |
+| Ném T | Đang kéo, tới trong bán kính 100 quanh sân; nạn nhân bị giữ 2,2–3,2 giây rồi hồi hồn |
+| Đỡ Q | Đỡ đòn ngắn, làm người tấn công ngã |
+| Cứu C | Gần nạn nhân, giải trạng thái; có thể cứu người khác hội |
+| Vùng vẫy Space | Rút ngắn khống chế; ba lần thoát kéo |
+| Chuối B | Đặt trước mặt, tồn tại 15 giây; sau một giây chủ bẫy cũng trượt |
+| Gỡ V | Gỡ bẫy gần nhất |
 
-## Điểm phe và phối hợp
+Thể lực tối đa 100, hồi 10 mỗi giây. Mỗi chiêu có chi phí và hồi chiêu riêng trong `shared/mischief.ts`. Máy chủ kiểm tra mục tiêu, khoảng cách, trạng thái, thể lực, bảo hộ và hồi chiêu. Ba hội A/B/C có điểm quậy chung. Người chơi cùng phòng ở khác vùng vẫn chat và thấy nhau trong danh sách hội.
 
-- Gây choáng đối thủ khác phe: +1 điểm. Ném đối thủ khác phe vào cảnh: +3 điểm.
-- Cứu đồng đội khỏi khống chế do phe khác gây ra: +2 điểm. Không thưởng cứu nạn do cùng phe tạo ra, tránh đẩy bạn rồi cứu để cày điểm.
-- Đẩy / đặt chuối / đánh người cùng phe không cộng điểm. Điểm chỉ là bảng tranh tài trong phòng, không quy đổi vật phẩm hay tiền.
-- Bảng nhóm cho biết đồng đội ở tầng nào. Chat và điểm đi suốt phòng; tương tác chỉ áp dụng với người ở cùng tầng. Đèn chung cho cả phòng ở từng tầng, tiến trình mở tầng vẫn theo từng người.
-- Nhóm có thể phân người gõ / kéo / bảo vệ hoặc phục kích ngoài vùng nghỉ, phe khác có thể thủ, cứu hoặc mở đường vòng. Không có va chạm thân người chặn kín đường; đây là chống khống chế, không phải xây vật cản vô hạn.
+Trạm xuất phát, trạm nghỉ và ba cổng là nơi bảo hộ. Hồi hồn có miễn khống chế ngắn; người mất kết nối không giữ được dây kéo. Đẩy và kéo không đưa nạn nhân vào cây / đá. Các hình phạt dùng vong hoạt hình hài, không gây mất tiến độ sưu tầm.
 
-## Dùng trên điện thoại
+## Giao diện
 
-Chạm vong trên bản đồ hoặc chọn trong bảng mục tiêu; dùng **Đến gần mục tiêu** để tự đi tới. Các nút chiêu tự khóa khi thiếu tầm, thể lực, hồi chiêu hay trạng thái cần thiết. Khi bị giữ, bảng đổi thành nút **Vùng vẫy**. Máy chủ vẫn xác thực lại mọi điều kiện.
+Cảnh game toàn khung; camera bám người chơi, có zoom. HUD gồm thể lực / đốm hồn, tên vùng, mục tiêu đang chọn, chat thu gọn, bản đồ nhỏ và thanh chiêu. M mở bản đồ 18 vùng, chọn một vùng để dẫn đường qua các cổng thật. Đi bằng phím hoặc cần điều khiển để đổi ý. Trên cảm ứng có cần di chuyển và thanh chiêu ba hàng.
 
-## Lưu trữ và giới hạn
-
-Phe, điểm, bẫy, khống chế và thể lực là trạng thái của phiên chơi. Khi kết nối lại, trở thành vong tự do ở tầng đầu, được bảo vệ ngắn; ấn / tầng mở vẫn đọc từ bản lưu. Phe đã chọn được trình duyệt gửi lại. Điểm mất khi phòng trống hoặc máy chủ khởi động lại.
-
-MVP dùng một process, tick 100ms cho khống chế / hồi phục; di chuyển vẫn 50ms mỗi ý định. Chưa có xếp hạng liên máy chủ, kỹ năng mở khóa lâu dài, hệ vật lý va chạm đầy đủ, party có trưởng nhóm hoặc đăng nhập tài khoản. Các tương tác là luật game sáng tác, tách khỏi ý nghĩa truyền thuyết của từng tầng.
+Cài đặt vẫn có âm lượng tổng / nền / hiệu ứng, tắt khi rời cửa sổ, màu vong, mắt, mũ, hào quang, hạt sáng, tên, cỡ nút, tương phản và giảm chuyển động. Ngoại hình được đồng bộ tới người khác trong phòng.

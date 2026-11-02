@@ -64,18 +64,23 @@ export function RebirthPanel({
                   <text
                     x={75 * Math.cos(angle)}
                     y={75 * Math.sin(angle) + 6}
-                    fontSize="18"
+                    fontSize="9"
                     textAnchor="middle"
                     fill={r.color}
                   >
-                    {r.han}
+                    {r.name}
                   </text>
                 </g>
               );
             })}
             <circle r="35" fill="#c1a875" stroke="#e0c78d" strokeWidth="2" />
-            <text y="10" textAnchor="middle" fill="#314437" fontSize="30">
-              輪
+            <text textAnchor="middle" fill="#314437" fontSize="13">
+              <tspan x="0" y="-3">
+                LUÂN
+              </tspan>
+              <tspan x="0" y="15">
+                HỒI
+              </tspan>
             </text>
           </g>
           <path
@@ -142,8 +147,8 @@ export function RebirthPanel({
           </button>
           <p className="muted">
             {canRebirth
-              ? "Bạn đã đủ 18 ấn. Thao tác này bắt đầu lượt mới, xóa các ấn của lượt hiện tại và giữ số vòng đã đi."
-              : "Hoàn thành đủ 18 ấn và đến cổng tầng 18 để mở lượt mới."}{" "}
+              ? "Trở lại đầu hành trình, giữ nguyên kỷ vật, ngoại hình và các nơi đã khám phá."
+              : "Gặp Mạnh Bà ở trạm nghỉ vùng 18 để bắt đầu một vòng ngao du mới."}{" "}
             Đã hoàn tất {cycles} vòng. Lượt chơi mới là cơ chế game; nút xem các
             cõi không quyết định nghiệp hay nơi tái sinh.
           </p>
@@ -238,7 +243,7 @@ export function MythologyLibrary({
             </div>
             <div>
               <span className="section-kicker">
-                {c.han}
+                NHÂN VẬT ÂM TY
                 {c.court ? ` · ĐIỆN ${c.court}` : ""}
               </span>
               <h3>{c.name}</h3>
@@ -279,7 +284,7 @@ export function MythologyLibrary({
                   />
                 </svg>
                 <b>{m.name}</b>
-                <small>{m.court ? `Điện ${m.court}` : m.han}</small>
+                <small>{m.court ? `Điện ${m.court}` : "Âm ty"}</small>
               </button>
             ))}
           </div>
@@ -324,7 +329,7 @@ export function MythologyLibrary({
             </div>
             <div>
               <span className="section-kicker">
-                TẦNG {floor} · {floors[floor - 1].han}
+                TẦNG {floor} · {floors[floor - 1].name}
               </span>
               <h3>{p.title}</h3>
               <p>{p.description}</p>

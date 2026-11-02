@@ -177,9 +177,9 @@ export function Scene({
           textAnchor="middle"
           fill="#cfb87f"
           fontSize="16"
-          letterSpacing="8"
+          letterSpacing="1"
         >
-          {floor.han}地獄
+          {floor.name}
         </text>
         <path
           d="M435 242L500 206L565 242L500 277Z"

@@ -4,7 +4,7 @@ Biên soạn ngày 02/11/2026. Phạm vi: chọn một nền tảng dân gian c�
 
 ## Kết luận lựa chọn dị bản
 
-Không có một danh sách duy nhất áp dụng cho mọi kinh điển, vùng văn hóa và hình thức tín ngưỡng. Bài nghiên cứu của 范学新 (Phạm Học Tân) phân biệt danh sách 18 tầng phổ biến về sau với danh mục tên trong kinh và những hệ thống âm phủ khác. Vì vậy game chọn một thứ tự cố định để chơi, không tuyên bố thứ tự này là chân lý tôn giáo. [S1]
+Không có một danh sách duy nhất áp dụng cho mọi kinh điển, vùng văn hóa và hình thức tín ngưỡng. Bài nghiên cứu của Phạm Học Tân phân biệt danh sách 18 tầng phổ biến về sau với danh mục tên trong kinh và những hệ thống âm phủ khác. Vì vậy game chọn một thứ tự cố định để chơi, không tuyên bố thứ tự này là chân lý tôn giáo. [S1]
 
 Không có bộ dữ liệu định lượng để khẳng định đây là phiên bản “được nhắc đến nhiều nhất” trên toàn bộ cộng đồng Việt Nam. Cách diễn đạt chính xác là **một danh sách dân gian phổ biến được tài liệu nghiên cứu ghi nhận**. Các tên được đọc theo Hán Việt để giao diện dễ dùng; đây không phải chứng cứ rằng mọi tên dịch đều có một dạng tiếng Việt chuẩn duy nhất.
 
@@ -14,26 +14,25 @@ Thập điện là hệ thống quan tòa của âm phủ; 18 tầng là một h
 
 | Mã | Tài liệu | Dùng cho | Giới hạn |
 | --- | --- | --- | --- |
-| S1 | [《延庆花盆关帝庙二十司地狱壁画考辨》, 北京文博 2010.3, tác giả 范学新](https://wwj.beijing.gov.cn/bjww/resource/cms/article/362762/515676/2018052316335739806.pdf) | Danh sách và thứ tự 18 tầng; phân biệt dị bản; hình bích họa trong bài | Không suy từ tên tầng ra một danh mục “tội danh” chuẩn; bài bắt đầu trang in 34, phần danh sách ở trang in 35 |
+| S1 | [Nghiên cứu bích họa hai mươi ty địa ngục tại đền Quan Đế, Hoa Bồn, Diên Khánh; Bắc Kinh Văn Bác 2010.3; Phạm Học Tân](https://wwj.beijing.gov.cn/bjww/resource/cms/article/362762/515676/2018052316335739806.pdf) | Danh sách và thứ tự 18 tầng; phân biệt dị bản; hình bích họa trong bài | Không suy từ tên tầng ra một danh mục “tội danh” chuẩn; bài bắt đầu trang in 34, phần danh sách ở trang in 35 |
 | S2 | [British Museum, painting / handscroll, 1919,0101,0.80](https://www.britishmuseum.org/collection/object/A_1919-0101-0-80) | Hình tượng quan tòa, thư lại, sổ ghi việc thiện ác, Địa Tạng; tranh cuộn từ Đôn Hoàng | Là tư liệu Thập điện, không chứng minh thứ tự 18 tầng |
 | S3 | [International Dunhuang Programme, Beliefs, rituals and practices](https://idp.bl.uk/discover/learning/dunhuang/dunhuang-articles/the-cultural-melting-pot/beliefs-rituals-and-practices/) | Bối cảnh giao thoa Phật giáo và tín ngưỡng bản địa; gương nghiệp | Không dùng để xác nhận mọi cảnh game |
 | S4 | [National Museum of Singapore / Roots, Haw Par Villa exhibit](https://www.roots.gov.sg/Collection-Landing/listing/1110979) | Ảnh tham khảo cách kể chuyện âm phủ bằng cảnh tượng vật thể | Bản thể hiện tại Singapore về Thập điện, không đại diện độc nhất cho Việt Nam |
-| S5 | [Wikipedia tiếng Trung, 十八层地狱](https://zh.wikipedia.org/wiki/十八层地狱) | Đối chiếu có nhiều danh sách trong các tác phẩm khác nhau | Nguồn phụ, có cảnh báo độ chính xác và thiếu dẫn chứng; không làm nguồn nền duy nhất |
 | S6 | [Phatgiao.org.vn, 18 tầng địa ngục, Yên Trí, 01/02/2024](https://phatgiao.org.vn/18-tang-dia-nguc-d81132.html) | Bản kể tiếng Việt; đối chiếu tên và chủ đề được gán cho từng tầng | Nội dung phổ biến tín ngưỡng, không có đối chiếu văn bản học; không dùng mọi chi tiết làm giáo lý chuẩn |
 
-Các trang bảo tàng và IDP là nguồn ưu tiên cho hình tượng / bối cảnh. Wikipedia chỉ dùng phát hiện đầu mối. Nguồn S1 ghi rõ danh sách “phổ biến về sau”; không cần suy ra thứ tự này là nguyên văn kinh Phật.
+Các trang bảo tàng và IDP là nguồn ưu tiên cho hình tượng / bối cảnh. Nguồn S1 ghi rõ danh sách “phổ biến về sau”; không cần suy ra thứ tự này là nguyên văn kinh Phật.
 
-S6 có một số cách viết khác giao diện như “Dầu Oa”, “Đao Cư”. Dự án giữ “Du Oa” / “Đao Cưa” để đọc nghĩa chữ Hán rõ hơn. Các nhãn chủ đề theo S6 trong danh mục là tóm lược rất ngắn của bản kể này; không xác nhận những quy kết có định kiến, đặc biệt về tái hôn, sức khỏe sinh sản và người mất trong khủng hoảng. Với tầng 14, chuyển thể tập trung tưởng nhớ và nâng đỡ, không tái hiện lời phán xét người mất.
+S6 có một số cách viết khác giao diện như “Dầu Oa”, “Đao Cư”. Dự án giữ “Du Oa” / “Đao Cưa” để đọc tên hình phạt rõ hơn. Các nhãn chủ đề theo S6 trong danh mục là tóm lược rất ngắn của bản kể này; không xác nhận những quy kết có định kiến, đặc biệt về tái hôn, sức khỏe sinh sản và người mất trong khủng hoảng. Với tầng 14, chuyển thể tập trung tưởng nhớ và nâng đỡ, không tái hiện lời phán xét người mất.
 
 ## Ý nghĩa, thành phần và hình ảnh từng tầng
 
-Xem [FLOORS.md](FLOORS.md) để đọc đủ 18 mục với tên Hán Việt, chữ Hán, nghĩa hình tượng, thông điệp chuyển thể, thành phần thiết kế, minh họa và câu hỏi.
+Xem [FLOORS.md](FLOORS.md) để đọc đủ 18 mục với tên tiếng Việt, nghĩa hình tượng, thông điệp chuyển thể, thành phần thiết kế và minh họa.
 
 Phân tầng độ chắc chắn:
 
 - **Có căn cứ tên gọi:** các tên và thứ tự theo S1; phần “hình tượng định danh” diễn giải nghĩa tên, ví dụ gương, cây sắt hoặc cối xay.
 - **Không xác nhận ở mức từng tầng:** một bộ “tội nào chắc chắn xuống tầng nào”, người cai quản riêng, màu sắc hay sơ đồ địa lý cụ thể. Những mô tả trên mạng thường trộn nguồn; dự án không coi đó là dữ kiện đã xác thực.
-- **Sáng tác cho game:** suy ngẫm đạo đức, câu hỏi và câu trả lời, hai đèn cộng tác, Dẫn hồn sứ, ấn ký, cây cầu, cơ cấu mở đường và cảnh kết thúc. Các thành phần thiết kế không được ghi là vật thể khảo cổ có thật.
+- **Sáng tác cho game:** suy ngẫm đạo đức, đường đi thế giới mở, ba cổng mỗi vùng, rương đốm hồn, trạm nghỉ, đối thoại hài hước và các tương tác troll. Các thành phần thiết kế không được ghi là vật thể khảo cổ có thật.
 - **Mỹ thuật hiện tại:** 18 sân cảnh hình phạt riêng, dùng chung mặt phẳng điều khiển. Model nhân vật có rig 2D và ba trạng thái. Đây là cảnh game hoạt hình, không phải phục dựng di tích.
 
 ## Tư liệu thị giác và quyền sử dụng

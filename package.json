@@ -1,13 +1,16 @@
 {
   "name": "am-phu-du-ky",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "node scripts/check-port.mjs --dev",
     "dev": "concurrently -k \"tsx watch server/index.ts\" \"vite --host 0.0.0.0\"",
     "build": "tsc --noEmit && vite build",
+    "prestart": "node scripts/check-port.mjs",
     "start": "tsx server/index.ts",
-    "test": "tsx --test tests/*.test.ts"
+    "test": "tsx --test tests/*.test.ts",
+    "check:language": "tsx scripts/check-vietnamese.ts --build"
   },
   "dependencies": {
     "express": "^5.1.0",

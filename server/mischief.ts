@@ -1,3 +1,4 @@
+import { MAP, clearSegment, canStand } from "../shared/exploration";
 import { randomUUID } from "node:crypto";
 import type { Player } from "../shared/world";
 import { WORLD } from "../shared/world";
@@ -168,8 +169,8 @@ export class MischiefEngine {
     }
     if (action === "banana") {
       const point = {
-        x: clamp(actor.x + s.facing.x * 45, 160, 840),
-        y: clamp(actor.y + s.facing.y * 45, 150, 580),
+        x: clamp(actor.x + s.facing.x * 45, MAP.minX, MAP.maxX),
+        y: clamp(actor.y + s.facing.y * 45, MAP.minY, MAP.maxY),
       };
       if (inSanctuary(actor) || inSanctuary(point))
         return "Không đặt bẫy trong vùng nghỉ.";
@@ -283,8 +284,12 @@ export class MischiefEngine {
         `${actor.name} đẩy ngã!`,
         actor.team,
       );
-      target!.x = clamp(target!.x + dx * 55, 155, 845);
-      target!.y = clamp(target!.y + dy * 55, 145, 585);
+      const landing = {
+        x: clamp(target!.x + dx * 55, MAP.minX, MAP.maxX),
+        y: clamp(target!.y + dy * 55, MAP.minY, MAP.maxY),
+      };
+      if (clearSegment(actor.floor, target!, landing))
+        Object.assign(target!, landing);
       this.announce(`${actor.name} đẩy ${target!.name} ngã lăn!`);
       return;
     }
@@ -319,8 +324,12 @@ export class MischiefEngine {
       this.recover(t, "Được đưa về vùng nghỉ.");
       return;
     }
-    t.x = clamp(actor.x - s.facing.x * 29, 155, 845);
-    t.y = clamp(actor.y - s.facing.y * 29, 145, 585);
+    const trailing = {
+      x: clamp(actor.x - s.facing.x * 29, MAP.minX, MAP.maxX),
+      y: clamp(actor.y - s.facing.y * 29, MAP.minY, MAP.maxY),
+    };
+    if (canStand(actor.floor, trailing)) Object.assign(t, trailing);
+    else Object.assign(t, { x: actor.x, y: actor.y });
   }
   moved(actor: Player, previous: { x: number; y: number }) {
     const s = this.soul(actor),

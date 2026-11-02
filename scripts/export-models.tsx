@@ -174,7 +174,7 @@ const head = `<!doctype html><html lang="vi"><meta charset="utf-8"><meta name="v
 const cards = characters
   .map(
     (c) =>
-      `<article class="card"><a href="characters/${c.id}.svg"><img data-model="${c.id}" src="characters/${c.id}.svg" alt="${c.name}"></a><h3>${c.name}</h3><small>${c.han} · ${c.court ? `Điện ${c.court}` : c.kind}</small><p>${c.role}</p></article>`,
+      `<article class="card"><a href="characters/${c.id}.svg"><img data-model="${c.id}" src="characters/${c.id}.svg" alt="${c.name}"></a><h3>${c.name}</h3><small>${c.court ? `Điện ${c.court}` : "Nhân vật âm ty"}</small><p>${c.role}</p></article>`,
   )
   .join("");
 const stages = punishments
@@ -194,12 +194,12 @@ writeFileSync(
 const modelRows = characters
   .map(
     (c) =>
-      `| [${c.name}](../../public/models/characters/${c.id}.svg) | ${c.han} | ${c.features} | ${c.source} |`,
+      `| [${c.name}](../../public/models/characters/${c.id}.svg) | ${c.role} | ${c.features} | ${c.source} |`,
   )
   .join("\n");
 writeFileSync(
   "docs/models/CHARACTERS.md",
-  `# Bộ model nhân vật 2D\n\nCó ${characters.length} model, mỗi model có ba trạng thái đứng, làm việc, ngạc nhiên; xuất 57 SVG có nền trong suốt. Dùng rig đầu / thân / mắt / tay / đạo cụ riêng trong CharacterSprite.tsx. Hoạt hình dựa trên CSS, không phải sprite atlas ảnh hoặc mesh 3D.\n\n| Nhân vật | Chữ Hán | Nhận diện | Nguồn vai trò |\n| --- | --- | --- | --- |\n${modelRows}\n\nNguồn dẫn trong [RESEARCH.md](../RESEARCH.md). Pháp khí, tỉ lệ và cách biểu đạt được cách điệu. Model vua phân biệt bằng màu áo, số điện và nhãn tên; đây không phải mười bộ phục sức có chứng cứ khảo cổ riêng. Địa Tạng được tạo hình điềm đạm; các cảnh Uổng Tử tập trung tưởng niệm.\n\nBộ gốc: public/models/characters. Các tệp -work.svg và -surprised.svg đi kèm từng tên.\n`,
+  `# Bộ model nhân vật 2D\n\nCó ${characters.length} model, mỗi model có ba trạng thái đứng, làm việc, ngạc nhiên; xuất 57 SVG có nền trong suốt. Dùng rig đầu / thân / mắt / tay / đạo cụ riêng trong CharacterSprite.tsx. Hoạt hình dựa trên CSS, không phải sprite atlas ảnh hoặc mesh 3D.\n\n| Nhân vật | Vai trò | Nhận diện | Nguồn vai trò |\n| --- | --- | --- | --- |\n${modelRows}\n\nNguồn dẫn trong [RESEARCH.md](../RESEARCH.md). Pháp khí, tỉ lệ và cách biểu đạt được cách điệu. Model vua phân biệt bằng màu áo, số điện và nhãn tên; đây không phải mười bộ phục sức có chứng cứ khảo cổ riêng. Địa Tạng được tạo hình điềm đạm; các cảnh Uổng Tử tập trung tưởng niệm.\n\nBộ gốc: public/models/characters. Các tệp -work.svg và -surprised.svg đi kèm từng tên.\n`,
 );
 writeFileSync(
   "docs/models/PUNISHMENTS.md",
@@ -217,7 +217,7 @@ writeFileSync(
     rebirthSteps
       .map((s, i) => `${i + 1}. **${s.title}:** ${s.detail}`)
       .join("\n") +
-    `\n\nCác cõi: ${realms.map((r) => r.name).join(", ")}.\n\nThăm lần lượt 18 tầng và bắt đầu lại là cơ chế game. Nút xem từng cõi chỉ mở chú giải, không chọn nghiệp hay kết quả tái sinh. Máy chủ chỉ cho mở lượt mới khi đủ 18 ấn và nhân vật đang ở cổng tầng 18. Tiến trình lượt hiện tại được đặt lại, số vòng hoàn tất tăng và được lưu. Nguồn: S1, S3, S8, S9, S11.\n`,
+    `\n\nCác cõi: ${realms.map((r) => r.name).join(", ")}.\n\nTự do ngao du giữa 18 vùng và bắt đầu lại là cơ chế game. Nút xem từng cõi chỉ mở chú giải, không chọn nghiệp hay kết quả tái sinh. Gặp Mạnh Bà tại trạm nghỉ vùng 18 để trở lại đầu hành trình. Ngoại hình, đốm hồn và các nơi đã khám phá được giữ lại, số vòng ngao du tăng và được lưu. Nguồn: S1, S3, S8, S9, S11.\n`,
 );
 console.log(
   `Exported ${characters.length * 3} character SVGs, ${punishments.length} punishment SVGs, gallery and design documents.`,

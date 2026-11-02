@@ -672,7 +672,7 @@ export function PunishmentStage({
             fill="#c2c4b2"
             fontSize="12"
           >
-            枉死城
+            UỔNG TỬ
           </text>
           <rect x="75" y="196" width="17" height="23" rx="4" fill="#d8bd85" />
         </>

@@ -1,0 +1,1507 @@
+.ow-game {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: #233632;
+  color: #e8e8d4;
+  font-family: "Be Vietnam Pro", sans-serif;
+  isolation: isolate;
+  font-size: 13px;
+}
+.ow-game * {
+  box-sizing: border-box;
+}
+.ow-game button {
+  font: inherit;
+  cursor: pointer;
+}
+.ow-game button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+.ow-game button:focus-visible,
+.ow-game input:focus-visible,
+.ow-game select:focus-visible {
+  outline: 2px solid #f5d89b;
+  outline-offset: 3px;
+}
+.ow-scene {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  touch-action: none;
+  user-select: none;
+}
+.ow-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 170px 45px #0c20275e;
+  background: linear-gradient(
+    #0d202a8a,
+    transparent 22%,
+    transparent 78%,
+    #0b1e27aa
+  );
+}
+.ow-glass {
+  background: linear-gradient(145deg, #1b3034ed, #15282de6);
+  border: 1px solid #82938b38;
+  box-shadow: 0 8px 30px #07141933;
+  backdrop-filter: blur(14px);
+  border-radius: 12px;
+}
+.ow-eyebrow {
+  display: block;
+  color: #beac80;
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+.ow-game .ow-primary {
+  background: #e0c48c;
+  color: #243430;
+  border: 1px solid #f1dcad;
+  padding: 13px 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 7px;
+  font-weight: 700;
+}
+.ow-primary:hover {
+  background: #f3dca9;
+}
+.ow-icon {
+  background: #183035dc;
+  border: 1px solid #85978b45;
+  color: #c7d4c7;
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  position: relative;
+}
+.ow-icon:hover {
+  border-color: #d5bb81;
+  color: #f3d394;
+}
+.ow-icon svg {
+  width: 19px;
+}
+.ow-icon kbd {
+  position: absolute;
+  bottom: -5px;
+  right: -4px;
+  border: 1px solid #63736c;
+  background: #233a3b;
+  font-size: 9px;
+  border-radius: 3px;
+  padding: 0 3px;
+}
+.ow-top-right {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  display: flex;
+  gap: 8px;
+}
+.ow-top-left {
+  position: absolute;
+  top: 24px;
+  left: 25px;
+  display: flex;
+  align-items: center;
+  width: 290px;
+  padding: 9px 14px 9px 5px;
+  gap: 9px;
+}
+.ow-avatar {
+  width: 58px;
+  height: 68px;
+  flex-shrink: 0;
+}
+.ow-top-left > div {
+  flex: 1;
+}
+.ow-player-name {
+  font-weight: 700;
+  font-size: 14px;
+}
+.ow-player-name span {
+  display: block;
+  font-size: 10px;
+  color: #a6b5a8;
+  font-weight: 400;
+  margin-top: 4px;
+}
+.ow-energy {
+  height: 5px;
+  background: #0b2328;
+  border-radius: 3px;
+  margin: 9px 0 5px;
+  overflow: hidden;
+}
+.ow-energy i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #71b5a1, #b5d7ac);
+  transition: width 0.2s;
+}
+.ow-top-left small {
+  font-size: 9px;
+  color: #9ab4aa;
+  display: flex;
+  justify-content: space-between;
+}
+.ow-top-left small span {
+  color: #d2ba82;
+}
+.ow-location {
+  position: absolute;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+  text-shadow: 0 2px 12px #071c20;
+}
+.ow-location > span {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: #c3bf9d;
+}
+.ow-location h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 32px;
+  margin: 6px 0 2px;
+  font-weight: 400;
+  color: #f2e4c1;
+}
+.ow-location small {
+  font-size: 10px;
+  color: #b3c2b2;
+}
+.ow-compass {
+  font-size: 9px;
+  letter-spacing: 2px;
+  margin-top: 17px;
+  color: #d8c89f;
+}
+.ow-compass span {
+  margin: 0 18px;
+  color: #9aa992;
+}
+.ow-expedition {
+  position: absolute;
+  top: 138px;
+  left: 25px;
+  width: 255px;
+  padding: 17px;
+}
+.ow-expedition b {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #e9d7ad;
+  margin-top: 12px;
+}
+.ow-expedition p {
+  font-size: 11px;
+  line-height: 1.8;
+  color: #aabbad;
+  margin: 9px 0 12px;
+}
+.ow-expedition > div {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  color: #a8c3b2;
+  border-top: 1px solid #8fa38822;
+  padding-top: 10px;
+}
+.ow-expedition button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  color: #d3be90;
+  font-size: 10px;
+  width: 100%;
+  padding: 12px 0 0;
+}
+.ow-target {
+  position: absolute;
+  top: 145px;
+  right: 25px;
+  width: 230px;
+  padding: 15px;
+  display: grid;
+  gap: 7px;
+}
+.ow-target > span {
+  font-size: 9px;
+  color: #d6ac83;
+  letter-spacing: 1px;
+}
+.ow-target > b {
+  font-size: 16px;
+}
+.ow-target small {
+  font-size: 10px;
+  color: #9eb4ad;
+}
+.ow-target button {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  background: none;
+  border: none;
+  color: #b4c6bb;
+}
+.ow-bottom {
+  position: absolute;
+  bottom: 23px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 13px;
+  width: max-content;
+  max-width: 75%;
+}
+.ow-hotbar {
+  padding: 7px;
+  display: flex;
+  gap: 5px;
+  border-radius: 13px;
+}
+.ow-hotbar button {
+  width: 67px;
+  height: 72px;
+  background: linear-gradient(#314540c9, #243b3ad9);
+  border: 1px solid #7b8e784d;
+  border-radius: 7px;
+  position: relative;
+  color: #ddd8b6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.ow-hotbar button:hover {
+  background: #40564a;
+  border-color: #d1bb86;
+  transform: translateY(-2px);
+}
+.ow-hotbar button > span {
+  font-size: 9px;
+}
+.ow-hotbar kbd {
+  position: absolute;
+  top: 4px;
+  left: 5px;
+  font-size: 9px;
+  color: #b4c6ae;
+}
+.ow-hotbar small {
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  font-size: 8px;
+  color: #a1ad92;
+}
+.ow-hotbar i {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #14272de8;
+  border-radius: 6px;
+  font-size: 20px;
+  color: #e4c997;
+  font-style: normal;
+}
+.ow-action-tip {
+  font-size: 9px;
+  color: #9cafa4;
+  text-align: center;
+  white-space: nowrap;
+}
+.ow-interact {
+  border: 1px solid #c8bd8b8a;
+  color: #efe2b7;
+  border-radius: 8px;
+  padding: 8px 14px 8px 8px;
+  background: #172e31eb;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 20px #0a191e55;
+}
+.ow-interact kbd {
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  border-radius: 5px;
+  background: #d6bd85;
+  color: #263d38;
+  font-size: 14px;
+}
+.ow-interact span {
+  font-size: 12px;
+}
+.ow-walk-hint {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 10px;
+  color: #c1cabc;
+  text-shadow: 0 2px 4px #102d2b;
+}
+.ow-chat {
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+  width: 265px;
+}
+.ow-chat-toggle {
+  color: #b2c4b9;
+  padding: 12px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px !important;
+}
+.ow-chat-toggle span {
+  margin-left: auto;
+  color: #e3cc9b;
+  font-size: 9px;
+}
+.ow-chat-body {
+  margin-bottom: 7px;
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  padding: 12px;
+}
+.ow-chat-log {
+  max-height: 220px;
+  overflow: auto;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.ow-chat-log p {
+  margin: 7px 0;
+  color: #c2d2c7;
+}
+.ow-chat-log b {
+  color: #dfc594;
+  display: block;
+}
+.ow-chat-log p.system {
+  color: #92b3a6;
+  font-style: italic;
+}
+.ow-chat form {
+  display: flex;
+  border-top: 1px solid #abc0aa25;
+  margin-top: 8px;
+  padding-top: 9px;
+  gap: 8px;
+}
+.ow-chat input {
+  min-width: 0;
+  flex: 1;
+  background: none;
+  border: none;
+  color: #e0dec4;
+  font: inherit;
+  font-size: 10px;
+}
+.ow-chat form button {
+  background: none;
+  color: #d9c394;
+  border: 0;
+}
+.ow-minimap {
+  position: absolute;
+  right: 25px;
+  bottom: 25px;
+  width: 202px;
+  padding: 10px;
+  border-radius: 12px;
+}
+.ow-minimap > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1px 2px 8px;
+  font-size: 10px;
+  color: #d4caa2;
+}
+.ow-minimap > div span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ow-minimap button {
+  background: none;
+  border: none;
+  color: #b7c9ba;
+  padding: 0;
+}
+.ow-minimap > svg {
+  width: 100%;
+  aspect-ratio: 2800/1900;
+  border-radius: 7px;
+  cursor: crosshair;
+}
+.ow-minimap small {
+  font-size: 8px;
+  display: block;
+  text-align: center;
+  color: #9eb1a2;
+  margin-top: 5px;
+}
+.ow-zoom {
+  position: absolute;
+  right: 25px;
+  bottom: 226px;
+  display: flex;
+  gap: 3px;
+}
+.ow-zoom button {
+  background: #1d3434d9;
+  border: 1px solid #6e83745e;
+  border-radius: 5px;
+  color: #cfccaa;
+  width: 28px;
+  height: 27px;
+  font-size: 18px;
+}
+.ow-connection {
+  position: absolute;
+  bottom: 8px;
+  left: 27px;
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: #90aaa0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.ow-connection i,
+.ow-status i {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #a87a63;
+}
+.ow-connection i.online,
+.ow-status i.online {
+  background: #8ac3a5;
+  box-shadow: 0 0 6px #8ac3a5;
+}
+.ow-toast {
+  position: absolute;
+  top: 125px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #d7c28f;
+  color: #223c37;
+  border: 1px solid #eeddaf;
+  border-radius: 8px;
+  padding: 12px 35px 12px 15px;
+  font-size: 11px;
+  max-width: 470px;
+  box-shadow: 0 5px 30px #0f242b55;
+  z-index: 20;
+}
+.ow-toast button {
+  position: absolute;
+  top: 10px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: #385145;
+}
+.ow-dialog {
+  position: absolute;
+  left: 50%;
+  bottom: 180px;
+  transform: translateX(-50%);
+  padding: 25px;
+  max-width: 520px;
+  width: 90%;
+  z-index: 25;
+}
+.ow-dialog h2 {
+  font-size: 22px;
+  color: #e9d2a1;
+}
+.ow-dialog p {
+  line-height: 1.9;
+  font-size: 14px;
+}
+.ow-dialog small {
+  display: block;
+  font-size: 10px;
+  color: #9db4a8;
+  margin-top: 15px;
+}
+.ow-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  background: #071c25ba;
+  backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+  padding: 25px;
+}
+.ow-modal {
+  position: relative;
+  background: linear-gradient(130deg, #263d3d, #172f34);
+  color: #dfdfc9;
+  border: 1px solid #9aab8e57;
+  border-radius: 17px;
+  max-height: 90dvh;
+  overflow: auto;
+  width: min(1050px, 100%);
+  padding: 32px;
+  box-shadow: 0 24px 100px #06181d88;
+}
+.ow-modal > h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  color: #e8d6ae;
+  font-weight: 400;
+  font-size: 34px;
+  margin: 12px 0;
+}
+.ow-modal > p {
+  font-size: 12px;
+  color: #a7bcb0;
+  line-height: 1.8;
+  max-width: 800px;
+}
+.ow-close {
+  position: absolute !important;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  background: #1b3036 !important;
+  color: #ccd4bd !important;
+  border: 1px solid #8f9e8066 !important;
+  border-radius: 7px;
+  z-index: 5;
+}
+.ow-close svg {
+  width: 17px;
+}
+.ow-atlas {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  margin-top: 24px;
+}
+.ow-atlas button {
+  background: linear-gradient(150deg, #344b45, #203638);
+  border: 1px solid #7d927358;
+  border-radius: 9px;
+  padding: 15px 10px;
+  text-align: left;
+  color: #d9dfc7;
+  position: relative;
+  min-height: 137px;
+  overflow: hidden;
+}
+.ow-atlas button:before {
+  content: "";
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border: 1px solid var(--region-color);
+  border-radius: 50%;
+  right: -25px;
+  top: -25px;
+  opacity: 0.18;
+  box-shadow: 0 0 50px var(--region-color);
+}
+.ow-atlas button > span {
+  color: var(--region-color);
+  font:
+    26px Georgia,
+    serif;
+  display: block;
+  margin-bottom: 12px;
+}
+.ow-atlas button b {
+  font-size: 12px;
+  display: block;
+}
+.ow-atlas button small {
+  font-size: 9px;
+  color: #a9bbad;
+  display: block;
+  margin-top: 4px;
+}
+.ow-atlas button i {
+  display: block;
+  font-size: 8px;
+  font-style: normal;
+  color: #829f91;
+  margin-top: 12px;
+}
+.ow-atlas .current {
+  border-color: #e0c38a;
+  background: #4b5541;
+}
+.ow-atlas .visited i {
+  color: #dcc89c;
+}
+.ow-atlas button:hover {
+  border-color: var(--region-color);
+  transform: translateY(-2px);
+}
+.ow-atlas-legend {
+  display: flex;
+  gap: 22px;
+  justify-content: center;
+  margin-top: 20px;
+  font-size: 10px;
+  color: #b4c4ae;
+}
+.ow-party-scores {
+  display: flex;
+  gap: 15px;
+  margin: 25px 0;
+}
+.ow-party-scores > div {
+  flex: 1;
+  border: 1px solid #9aab8e40;
+  border-radius: 10px;
+  padding: 20px;
+  font-size: 12px;
+}
+.ow-party-scores strong {
+  display: block;
+  font: 35px Georgia;
+  margin-top: 12px;
+}
+.ow-roster {
+  display: flex;
+  gap: 20px;
+  padding: 15px;
+  border-bottom: 1px solid #97aa8c2e;
+  font-size: 12px;
+}
+.ow-roster span {
+  margin-left: auto;
+  color: #c7b78c;
+}
+.ow-roster small {
+  color: #9cbaac;
+}
+.ow-help {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 30px;
+}
+.ow-help p {
+  line-height: 1.9;
+  font-size: 12px;
+  color: #adc1b2;
+}
+.ow-help b {
+  display: block;
+  font-size: 15px;
+  color: #e0c99b;
+  margin-bottom: 8px;
+}
+.ow-settings {
+  padding: 0;
+  max-width: 980px;
+}
+.ow-settings .settings-modal {
+  width: 100%;
+  max-width: 100%;
+  max-height: 85dvh;
+  border: 0;
+  box-shadow: none;
+}
+.ow-welcome {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7% 10%;
+  gap: 60px;
+  background: linear-gradient(90deg, #102b30ed, #16363a88 50%, #112930bd);
+}
+.ow-brand {
+  max-width: 530px;
+}
+.ow-brand h1 {
+  font:
+    100px/0.95 Georgia,
+    "Times New Roman",
+    serif;
+  color: #eee1b5;
+  margin: 25px 0 35px;
+  position: relative;
+  text-shadow: 0 3px 40px #0f2e28;
+}
+.ow-brand h1 em {
+  font-style: normal;
+  color: #b4c9ac;
+}
+.ow-brand h1 i {
+  position: absolute;
+  font-size: 55px;
+  color: #d1b881;
+  top: 36px;
+  right: 20px;
+  font-style: normal;
+}
+.ow-brand > p {
+  line-height: 2;
+  font-size: 16px;
+  color: #b6c8b9;
+}
+.ow-tags {
+  display: flex;
+  gap: 10px;
+  margin-top: 30px;
+}
+.ow-tags span {
+  border: 1px solid #a6b39740;
+  border-radius: 20px;
+  font-size: 10px;
+  color: #c5c8a7;
+  padding: 8px 13px;
+}
+.ow-join {
+  width: 350px;
+  padding: 28px;
+  background: #1a3036ed;
+  border: 1px solid #879b8157;
+  box-shadow: 0 25px 80px #0c242866;
+  border-radius: 15px;
+  flex-shrink: 0;
+}
+.ow-join h2 {
+  font-family: Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+  color: #e4d2a8;
+  margin: 17px 0;
+}
+.ow-join > p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #9eb8a9;
+}
+.ow-join label {
+  font-size: 10px;
+  color: #bdc8b1;
+  display: block;
+  margin: 19px 0;
+}
+.ow-join input,
+.ow-join select {
+  width: 100%;
+  background: #102a2f;
+  color: #e4dec0;
+  border: 1px solid #6e847354;
+  border-radius: 6px;
+  padding: 12px;
+  margin-top: 8px;
+  font:
+    12px "Be Vietnam Pro",
+    sans-serif;
+}
+.ow-join input::placeholder {
+  color: #6b8b82;
+}
+.ow-join .ow-primary {
+  width: 100%;
+  margin-top: 24px;
+}
+.ow-status {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  font-size: 9px;
+  color: #839f93;
+  margin-top: 17px;
+}
+.ow-status button {
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: #b9c6ac;
+  padding: 0;
+}
+.ow-stick {
+  display: none;
+  touch-action: none;
+}
+.ow-firefly {
+  animation: ow-drift 5s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+@keyframes ow-drift {
+  to {
+    transform: translate(12px, -20px);
+    opacity: 0.15;
+  }
+}
+.ow-game.reduce-motion * {
+  animation: none !important;
+  transition: none !important;
+}
+.ow-game.high-contrast .ow-glass {
+  background: #102629;
+  border-color: #c0cda6;
+}
+.ow-game.large-buttons .ow-hotbar button {
+  height: 86px;
+  width: 76px;
+}
+.ow-game .mythology-library {
+  background: none;
+}
+.ow-game .library-heading h2 {
+  color: #e9d5a8;
+}
+@media (min-width: 1700px) {
+  .ow-bottom {
+    bottom: 35px;
+  }
+  .ow-hotbar button {
+    width: 78px;
+    height: 78px;
+  }
+  .ow-minimap {
+    width: 245px;
+  }
+  .ow-zoom {
+    bottom: 260px;
+  }
+}
+@media (max-width: 1150px) {
+  .ow-expedition {
+    width: 215px;
+  }
+  .ow-hotbar button {
+    width: 57px;
+    height: 68px;
+  }
+  .ow-chat {
+    width: 210px;
+  }
+  .ow-minimap {
+    width: 170px;
+  }
+  .ow-zoom {
+    bottom: 205px;
+  }
+  .ow-top-left {
+    width: 240px;
+  }
+  .ow-location h1 {
+    font-size: 27px;
+  }
+  .ow-location small {
+    display: none;
+  }
+  .ow-top-right {
+    gap: 5px;
+  }
+  .ow-icon {
+    width: 35px;
+    height: 35px;
+  }
+  .ow-bottom {
+    bottom: 40px;
+  }
+  .ow-action-tip {
+    font-size: 8px;
+  }
+  .ow-atlas {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  .ow-welcome {
+    padding: 5% 7%;
+    gap: 35px;
+  }
+  .ow-brand h1 {
+    font-size: 83px;
+  }
+  .ow-brand h1 i {
+    right: 0;
+  }
+  .ow-brand .ow-eyebrow {
+    max-width: 270px;
+    line-height: 2;
+  }
+}
+@media (max-width: 850px) {
+  .ow-expedition {
+    display: none;
+  }
+  .ow-top-left {
+    top: 12px;
+    left: 12px;
+    width: 205px;
+    padding: 5px;
+  }
+  .ow-avatar {
+    width: 42px;
+    height: 49px;
+  }
+  .ow-player-name {
+    font-size: 12px;
+  }
+  .ow-player-name span {
+    font-size: 8px;
+  }
+  .ow-top-left small {
+    font-size: 8px;
+  }
+  .ow-location {
+    top: 15px;
+  }
+  .ow-location > span {
+    font-size: 7px;
+    letter-spacing: 1px;
+  }
+  .ow-location h1 {
+    font-size: 23px;
+  }
+  .ow-compass {
+    display: none;
+  }
+  .ow-top-right {
+    top: 12px;
+    right: 12px;
+    gap: 4px;
+  }
+  .ow-icon {
+    width: 32px;
+    height: 32px;
+  }
+  .ow-icon svg {
+    width: 16px;
+  }
+  .ow-minimap {
+    right: 12px;
+    bottom: 130px;
+    width: 140px;
+    padding: 7px;
+  }
+  .ow-minimap small {
+    display: none;
+  }
+  .ow-minimap > div {
+    font-size: 8px;
+  }
+  .ow-zoom {
+    bottom: 255px;
+    right: 12px;
+  }
+  .ow-bottom {
+    bottom: 15px;
+    max-width: 100%;
+    width: auto;
+    gap: 7px;
+  }
+  .ow-hotbar {
+    gap: 3px;
+    padding: 5px;
+  }
+  .ow-hotbar button {
+    width: 49px;
+    height: 59px;
+  }
+  .ow-hotbar button svg {
+    width: 20px;
+  }
+  .ow-hotbar button > span {
+    font-size: 8px;
+  }
+  .ow-hotbar small {
+    display: none;
+  }
+  .ow-action-tip {
+    display: none;
+  }
+  .ow-chat {
+    left: 12px;
+    bottom: 130px;
+    width: 200px;
+  }
+  .ow-chat-toggle {
+    padding: 8px;
+    font-size: 9px !important;
+  }
+  .ow-chat-toggle span {
+    display: none;
+  }
+  .ow-connection {
+    left: 12px;
+    bottom: 5px;
+  }
+  .ow-target {
+    top: 86px;
+    right: 12px;
+    width: 180px;
+    padding: 10px;
+  }
+  .ow-target b {
+    font-size: 13px;
+  }
+  .ow-toast {
+    top: 83px;
+    max-width: 65%;
+    font-size: 10px;
+  }
+  .ow-atlas {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .ow-modal {
+    padding: 24px;
+    max-height: 94dvh;
+  }
+  .ow-overlay {
+    padding: 12px;
+  }
+  .ow-atlas-legend {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .ow-welcome {
+    padding: 5%;
+    gap: 25px;
+  }
+  .ow-brand h1 {
+    font-size: 64px;
+  }
+  .ow-brand > p {
+    font-size: 12px;
+  }
+  .ow-brand .ow-tags {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .ow-join {
+    width: 310px;
+    padding: 22px;
+  }
+  .ow-help {
+    grid-template-columns: 1fr;
+  }
+  .ow-settings {
+    padding: 0;
+  }
+  .ow-game.large-buttons .ow-hotbar button {
+    width: 53px;
+    height: 66px;
+  }
+}
+@media (pointer: coarse) {
+  .ow-stick {
+    display: grid;
+    place-items: center;
+    position: absolute;
+    left: 28px;
+    bottom: 25px;
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    border: 1px solid #b1c59d55;
+    background: #1d3b3b77;
+    backdrop-filter: blur(3px);
+  }
+  .ow-stick i {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #b1c3a46e;
+    border: 1px solid #c1d0ad77;
+    pointer-events: none;
+  }
+  .ow-chat {
+    bottom: 150px;
+  }
+  .ow-bottom {
+    left: auto;
+    right: 12px;
+    transform: none;
+    max-width: calc(100% - 150px);
+  }
+  .ow-hotbar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .ow-hotbar button {
+    width: 49px;
+    height: 48px;
+    gap: 0;
+  }
+  .ow-hotbar button svg {
+    height: 19px;
+  }
+  .ow-hotbar kbd {
+    display: none;
+  }
+  .ow-minimap {
+    bottom: 170px;
+  }
+  .ow-zoom {
+    bottom: 295px;
+  }
+  .ow-interact {
+    padding: 5px;
+    gap: 5px;
+  }
+  .ow-interact span {
+    font-size: 9px;
+  }
+  .ow-interact kbd {
+    display: none;
+  }
+  .ow-walk-hint {
+    font-size: 8px;
+  }
+  .ow-chat-body {
+    max-width: 230px;
+  }
+  .ow-context {
+    max-width: 240px;
+  }
+  .ow-location h1 {
+    font-size: 21px;
+  }
+}
+@media (max-width: 570px) {
+  .ow-top-left {
+    width: 170px;
+  }
+  .ow-player-name {
+    font-size: 10px;
+  }
+  .ow-player-name span {
+    max-width: 110px;
+    white-space: nowrap;
+  }
+  .ow-top-left small span {
+    display: none;
+  }
+  .ow-location {
+    top: 80px;
+    left: 16px;
+    transform: none;
+    text-align: left;
+  }
+  .ow-location h1 {
+    font-size: 25px;
+  }
+  .ow-toast {
+    top: 145px;
+    max-width: 90%;
+    width: max-content;
+  }
+  .ow-target {
+    top: 85px;
+    width: 156px;
+  }
+  .ow-join {
+    width: 100%;
+    max-width: 370px;
+  }
+  .ow-welcome {
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    overflow-y: auto;
+    padding: 25px;
+  }
+  .ow-brand h1 {
+    font-size: 42px;
+    margin: 8px 0;
+  }
+  .ow-brand h1 br {
+    display: none;
+  }
+  .ow-brand h1 i {
+    display: none;
+  }
+  .ow-brand > p,
+  .ow-brand .ow-tags {
+    display: none;
+  }
+  .ow-brand .ow-eyebrow {
+    font-size: 8px;
+    max-width: none;
+    letter-spacing: 1px;
+  }
+  .ow-join h2 {
+    font-size: 26px;
+    margin: 12px 0;
+  }
+  .ow-join > p {
+    margin: 8px 0;
+  }
+  .ow-join label {
+    margin: 13px 0;
+  }
+  .ow-join input,
+  .ow-join select {
+    padding: 10px;
+    margin-top: 5px;
+  }
+  .ow-minimap {
+    width: 120px;
+  }
+  .ow-zoom {
+    bottom: 279px;
+  }
+  .ow-chat {
+    width: 160px;
+    bottom: 150px;
+  }
+  .ow-atlas {
+    gap: 6px;
+  }
+  .ow-atlas button {
+    padding: 10px 7px;
+    min-height: 123px;
+  }
+  .ow-atlas button b {
+    font-size: 10px;
+  }
+  .ow-atlas button small {
+    font-size: 8px;
+  }
+  .ow-atlas button i {
+    font-size: 7px;
+  }
+  .ow-modal > h2 {
+    font-size: 28px;
+  }
+  .ow-party-scores {
+    gap: 6px;
+  }
+  .ow-party-scores > div {
+    padding: 10px;
+    font-size: 9px;
+  }
+  .ow-roster {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .ow-roster small {
+    width: 100%;
+  }
+  .ow-dialog {
+    bottom: 170px;
+    padding: 20px;
+  }
+  .ow-dialog h2 {
+    font-size: 19px;
+  }
+  .ow-dialog p {
+    font-size: 12px;
+  }
+  .ow-dialog small {
+    font-size: 9px;
+  }
+  .ow-game.large-buttons .ow-hotbar button {
+    width: 49px;
+    height: 54px;
+  }
+}
+@media (max-height: 560px) and (min-width: 571px) {
+  .ow-expedition {
+    display: none;
+  }
+  .ow-top-left {
+    top: 10px;
+    left: 10px;
+  }
+  .ow-top-right {
+    top: 10px;
+    right: 10px;
+  }
+  .ow-location {
+    top: 10px;
+  }
+  .ow-bottom {
+    bottom: 12px;
+  }
+  .ow-minimap {
+    width: 130px;
+    bottom: 12px;
+  }
+  .ow-zoom {
+    bottom: 145px;
+  }
+  .ow-hotbar button {
+    height: 52px;
+  }
+  .ow-context {
+    margin-bottom: 0;
+  }
+  .ow-chat {
+    bottom: 12px;
+  }
+  .ow-welcome {
+    padding: 20px 8%;
+  }
+  .ow-brand h1 {
+    font-size: 65px;
+  }
+  .ow-brand p {
+    font-size: 12px;
+  }
+  .ow-join {
+    padding: 18px;
+  }
+  .ow-join label {
+    margin: 9px 0;
+  }
+  .ow-join input,
+  .ow-join select {
+    padding: 8px;
+    margin-top: 4px;
+  }
+  .ow-join h2 {
+    font-size: 24px;
+    margin: 8px 0;
+  }
+  .ow-join > p {
+    font-size: 10px;
+  }
+  .ow-join .ow-primary {
+    margin-top: 12px;
+    padding: 9px;
+  }
+  .ow-tags {
+    display: none;
+  }
+  .ow-stick {
+    bottom: 14px;
+    width: 90px;
+    height: 90px;
+  }
+  .ow-chat {
+    bottom: 115px;
+  }
+  .ow-minimap {
+    bottom: 145px;
+  }
+  .ow-zoom {
+    bottom: 268px;
+  }
+}
+.ow-settings .settings-modal {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: flex;
+  flex-direction: column;
+  max-height: 85dvh !important;
+}
+.ow-settings .settings-content {
+  overflow: auto;
+}
+.ow-settings .settings-title {
+  flex-shrink: 0;
+}
+.ow-settings .settings-footer {
+  flex-shrink: 0;
+}
+main.ow-game {
+  max-width: none;
+  width: 100%;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+}
+.ow-minimap > div > span {
+  width: auto;
+  max-width: none;
+}
+.ow-minimap > svg {
+  display: block;
+}
+.ow-game .ow-scene {
+  max-height: none;
+  min-height: 0;
+}
+.ow-game .soul-body-state {
+  pointer-events: none;
+}
+@media (max-width: 360px) {
+  .ow-top-right {
+    top: 80px;
+  }
+  .ow-top-right .ow-icon:last-child {
+    display: none;
+  }
+  .ow-location {
+    max-width: 145px;
+  }
+  .ow-top-left {
+    width: 190px;
+  }
+  .ow-hotbar button {
+    width: 43px;
+  }
+  .ow-stick {
+    left: 15px;
+    width: 90px;
+    height: 90px;
+  }
+  .ow-bottom {
+    max-width: calc(100% - 115px);
+  }
+}
+@media (pointer: coarse) {
+  .ow-hotbar {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .ow-hotbar button {
+    width: 52px;
+    height: 46px;
+  }
+  .ow-minimap {
+    bottom: 225px;
+  }
+  .ow-zoom {
+    bottom: 350px;
+  }
+  .ow-chat {
+    bottom: 160px;
+  }
+}
+@media (pointer: coarse) and (max-width: 570px) {
+  .ow-zoom {
+    bottom: 332px;
+  }
+}

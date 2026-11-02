@@ -386,7 +386,7 @@ export function CharacterSprite({
                 fill="#514f45"
                 stroke="none"
               >
-                {white ? "白" : "黑"}
+                {white ? "B" : "H"}
               </text>
             </>
           ) : holy ? (
