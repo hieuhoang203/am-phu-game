@@ -1,0 +1,814 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 290" role="img" aria-label="Thái Sơn Vương: Mũ miện có chuỗi hạt, áo quan, râu và thẻ lệnh; phân biệt bằng số điện, màu áo và biển tên.. Biểu cảm surprised."><title>Thái Sơn Vương · surprised</title><desc>Vị vua của điện thứ 7 trong hệ thống Thập điện; không tương ứng một-một với tầng địa ngục. Thiết kế hoạt hình của dự án.</desc><style>.character-sprite .sprite-body {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+.character-sprite.animated .sprite-body {
+  animation: sprite-breathe 3.8s ease-in-out infinite;
+}
+.character-sprite.animated .sprite-eyes {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sprite-blink 6s infinite;
+}
+.character-sprite.animated.pose-work .sprite-hand-right {
+  transform-box: fill-box;
+  transform-origin: left top;
+  animation: sprite-work 1.9s ease-in-out infinite;
+}
+.character-sprite.animated.pose-work .sprite-head {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: sprite-nod 2.3s ease-in-out infinite;
+}
+.character-sprite.animated.pose-surprised .sprite-body {
+  animation: sprite-startle 1.8s ease-in-out infinite;
+}
+.character-sprite.animated.kind-soul .sprite-body {
+  animation: sprite-float 3s ease-in-out infinite;
+}
+.character-sprite.animated.kind-mengpo .sprite-steam {
+  animation: steam-fade 3s infinite;
+}
+.punishment-stage.animated .tongue-stretch {
+  transform-box: fill-box;
+  transform-origin: left;
+  animation: tongue-stretch 3.2s ease-in-out infinite;
+}
+.punishment-stage.animated .stage-scissors {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: scissors-work 2.7s ease-in-out infinite;
+}
+.punishment-stage.animated .hanging-wisp {
+  transform-box: fill-box;
+  transform-origin: center top;
+  animation: hanging-wisp 3.6s ease-in-out infinite;
+}
+.punishment-stage.animated .mirror-memory {
+  animation: mirror-glow 4s ease-in-out infinite;
+}
+.punishment-stage.animated .bouncing-lid {
+  animation: lid-bounce 2.6s ease-in-out infinite;
+}
+.punishment-stage.animated .stage-steam {
+  animation: steam-fade 3.4s ease-in-out infinite;
+}
+.punishment-stage.animated .heat-wisp {
+  animation: heat-hop 2.7s ease-in-out infinite;
+}
+.punishment-stage.animated .climbing-wisp {
+  animation: climb-wisp 4s ease-in-out infinite;
+}
+.punishment-stage.animated .shivering-wisp {
+  animation: shiver-wisp 0.6s ease-in-out infinite;
+}
+.punishment-stage.animated .snowflake {
+  animation: snow-fall 4s ease-in-out infinite;
+}
+.punishment-stage.animated .snowflake:nth-child(2n) {
+  animation-delay: 1.5s;
+}
+.punishment-stage.animated .oil-bubble {
+  animation: oil-bubble 2.4s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.punishment-stage.animated .oil-bubble:nth-child(2n) {
+  animation-delay: 1.2s;
+}
+.punishment-stage.animated .bobbing-wisp {
+  animation: sprite-float 3s ease-in-out infinite;
+}
+.punishment-stage.animated .spinning-wisp {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: spin-wisp 5s ease-in-out infinite;
+}
+.punishment-stage.animated .falling-rock {
+  animation: rock-fall 3.5s ease-in-out infinite;
+}
+.punishment-stage.animated .squashed-wisp {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: ghost-squash 3.5s ease-in-out infinite;
+}
+.punishment-stage.animated .pounding-pestle {
+  animation: pestle-pound 2.5s ease-in-out infinite;
+}
+.punishment-stage.animated .soul-spark {
+  animation: spark-float 3.2s infinite;
+}
+.punishment-stage.animated .soul-top {
+  animation: soul-separate 4s ease-in-out infinite;
+}
+.punishment-stage.animated .saw-motion {
+  animation: saw-motion 3s ease-in-out infinite;
+}
+.punishment-stage.animated .mill-rotation {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: mill-turn 7s linear infinite;
+}
+.punishment-stage.animated .stage-flame {
+  animation: mirror-glow 3s ease-in-out infinite;
+}
+.punishment-stage.animated .saw-soul {
+  animation: mirror-glow 3s ease-in-out infinite;
+}
+.scene-theatre {
+  cursor: pointer;
+}
+.scene-theatre:hover {
+  filter: brightness(1.12);
+}
+.scene-caption {
+  pointer-events: none;
+}
+.model-detail {
+  display: grid;
+  grid-template-columns: minmax(200px, 0.9fr) 1.1fr;
+  gap: 26px;
+  padding: 18px 0 24px;
+  align-items: center;
+  border-bottom: 1px solid #3c5141;
+}
+.model-detail h3 {
+  font: 500 25px var(--serif);
+  margin: 12px 0;
+}
+.model-detail p {
+  font-size: 11px;
+}
+.model-detail blockquote {
+  font: italic 14px/1.8 var(--serif);
+  margin: 14px 0;
+  color: #d1ba85;
+  padding: 0 0 0 14px;
+  border-left: 2px solid #ac955d;
+}
+.model-detail .text-button {
+  margin-top: 17px;
+}
+.model-portrait svg,
+.punishment-portrait svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.pose-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+}
+.pose-controls button,
+.realm-options button {
+  border: 1px solid #455b4b;
+  border-radius: 3px;
+  color: #92a790;
+  font-size: 9px;
+  padding: 8px 10px;
+}
+.pose-controls .selected,
+.realm-options .selected {
+  background: #c6ab7330;
+  border-color: #b5a26d;
+  color: #e1cc98;
+}
+.character-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 25px;
+}
+.character-grid button {
+  min-width: 0;
+  background: #152623;
+  border: 1px solid #344d40;
+  border-radius: 4px;
+  padding: 8px 5px 13px;
+}
+.character-grid button.selected,
+.character-grid button:hover {
+  border-color: #bba366;
+  background: #2b392c;
+}
+.character-grid svg {
+  width: 100%;
+  height: 135px;
+}
+.character-grid b {
+  display: block;
+  font-size: 9px;
+  color: #cac3a3;
+  font-weight: 500;
+  line-height: 1.6;
+}
+.character-grid small {
+  font-size: 8px;
+  display: block;
+  margin-top: 5px;
+}
+.library-tabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid #405443;
+  padding-bottom: 14px;
+  margin-top: 19px;
+}
+.library-tabs button {
+  font-size: 10px;
+  padding: 10px 13px;
+  border: 1px solid #415847;
+  border-radius: 3px;
+  color: #98ac95;
+}
+.library-tabs button[aria-selected="true"] {
+  border-color: #b9a36f;
+  color: #e4d2a1;
+  background: #ae9e6a1a;
+}
+.library-select {
+  display: flex;
+  flex-direction: column;
+  font-size: 10px;
+  color: #bfb794;
+  margin-top: 25px;
+}
+.library-select select {
+  margin-top: 10px;
+}
+.punishment-portrait {
+  padding: 8px 0 15px;
+  border-radius: 5px;
+  text-align: center;
+}
+.punishment-portrait .outline-button {
+  font-size: 9px;
+}
+.punishment-thumbnails {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 24px;
+}
+.punishment-thumbnails button {
+  border: 1px solid #344d40;
+  border-radius: 3px;
+  padding: 4px;
+  background: #162622;
+  min-width: 0;
+}
+.punishment-thumbnails button.selected {
+  border-color: #bca16a;
+  background: #3c3d29;
+}
+.punishment-thumbnails img {
+  width: 100%;
+  height: auto;
+}
+.punishment-thumbnails span {
+  font-size: 8px;
+  color: #b8b998;
+  line-height: 1.6;
+  display: block;
+  padding-bottom: 7px;
+}
+.library-footnote {
+  font-size: 9px !important;
+  color: #7b9382 !important;
+  border-top: 1px solid #334a3d;
+  padding-top: 15px;
+  margin-top: 24px;
+}
+.model-library-modal {
+  width: 960px !important;
+}
+.rebirth-visual svg {
+  width: 100%;
+  max-height: 350px;
+}
+.realm-options {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.realm-description {
+  text-align: center;
+  min-height: 38px;
+}
+.rebirth-steps {
+  list-style: none;
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.rebirth-steps li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.rebirth-steps li > span {
+  width: 25px;
+  height: 25px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border: 1px solid #8e8860;
+  border-radius: 50%;
+  color: #c9b37e;
+  font-size: 10px;
+}
+.rebirth-steps b {
+  display: block;
+  font-size: 11px;
+  color: #c8c5aa;
+  font-weight: 500;
+}
+.rebirth-steps small {
+  display: block;
+  margin-top: 6px;
+}
+.rebirth-panel .gold-button {
+  width: 100%;
+  margin-top: 16px;
+}
+.floor-truth {
+  border: 1px solid #5c5c42;
+  border-radius: 4px;
+  background: #c5a86c09;
+  padding: 15px 17px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.floor-truth > div {
+  flex: 1;
+}
+.floor-truth b {
+  font: 14px var(--serif);
+  color: #d3bd8a;
+}
+.floor-truth p {
+  font-size: 9px;
+  color: #93a58c;
+  margin: 7px 0 0;
+}
+.floor-truth button {
+  font-size: 9px;
+  white-space: nowrap;
+  color: #c5b17e;
+}
+.scene.inspect-scene {
+  min-height: 0 !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+.atlas-map {
+  background: #111c1e;
+  border: 1px solid #425342;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.atlas-map svg {
+  max-height: 520px;
+}
+.stage-atlas-label {
+  color: #9fac94;
+  font-size: 10px;
+  line-height: 1.9;
+}
+.cycle-badge {
+  color: #a6b38c;
+  font-size: 8px;
+  margin-top: 9px;
+  display: block;
+}
+.lore-model-scene {
+  width: 100%;
+  max-height: 240px;
+  background: #182724;
+  border: 1px solid #3c5141;
+  border-radius: 4px;
+  margin: 18px 0;
+}
+.lore-model-scene svg {
+  display: block;
+  width: 100%;
+  height: 220px;
+}
+.mythology-library h2 {
+  font-size: 29px !important;
+}
+@keyframes sprite-breathe {
+  0%,
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+  50% {
+    transform: translateY(-1px) scaleY(1.025);
+  }
+}
+@keyframes sprite-blink {
+  0%,
+  43%,
+  47%,
+  100% {
+    transform: scaleY(1);
+  }
+  45% {
+    transform: scaleY(0.12);
+  }
+}
+@keyframes sprite-work {
+  0%,
+  100% {
+    transform: rotate(-7deg);
+  }
+  50% {
+    transform: rotate(9deg);
+  }
+}
+@keyframes sprite-nod {
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+@keyframes sprite-startle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-7px);
+  }
+  40% {
+    transform: translateY(0);
+  }
+}
+@keyframes sprite-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+@keyframes tongue-stretch {
+  0%,
+  100% {
+    transform: scaleX(0.75);
+  }
+  50% {
+    transform: scaleX(1.05);
+  }
+}
+@keyframes scissors-work {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(6deg);
+  }
+}
+@keyframes hanging-wisp {
+  0%,
+  100% {
+    transform: rotate(-9deg);
+  }
+  50% {
+    transform: rotate(9deg);
+  }
+}
+@keyframes mirror-glow {
+  0%,
+  100% {
+    opacity: 0.65;
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.2);
+  }
+}
+@keyframes lid-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-11px);
+  }
+}
+@keyframes steam-fade {
+  0% {
+    opacity: 0;
+  }
+  35% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+}
+@keyframes heat-hop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  45% {
+    transform: translateY(-12px) rotate(2deg);
+  }
+}
+@keyframes climb-wisp {
+  0%,
+  100% {
+    transform: translate(-10px, 10px);
+  }
+  60% {
+    transform: translate(5px, -20px);
+  }
+}
+@keyframes shiver-wisp {
+  0%,
+  100% {
+    transform: translateX(-1.4px);
+  }
+  50% {
+    transform: translateX(1.4px);
+  }
+}
+@keyframes snow-fall {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  40% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+}
+@keyframes oil-bubble {
+  0%,
+  100% {
+    transform: scale(0.6);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+@keyframes spin-wisp {
+  0%,
+  100% {
+    transform: rotate(-15deg);
+  }
+  50% {
+    transform: rotate(18deg);
+  }
+}
+@keyframes rock-fall {
+  0%,
+  100% {
+    transform: translateY(-18px);
+  }
+  60%,
+  78% {
+    transform: translateY(25px);
+  }
+}
+@keyframes ghost-squash {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  60%,
+  78% {
+    transform: scaleY(0.32) scaleX(1.6);
+  }
+}
+@keyframes pestle-pound {
+  0%,
+  100% {
+    transform: translateY(-25px);
+  }
+  65%,
+  75% {
+    transform: translateY(20px);
+  }
+}
+@keyframes spark-float {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+}
+@keyframes soul-separate {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-13px);
+  }
+}
+@keyframes saw-motion {
+  0%,
+  100% {
+    transform: translateX(-15px);
+  }
+  50% {
+    transform: translateX(15px);
+  }
+}
+@keyframes mill-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.punishment-stage.animated .split-horizontal.fragment-0 {
+  animation: fragment-up 4s ease-in-out infinite;
+}
+.punishment-stage.animated .split-horizontal.fragment-2 {
+  animation: fragment-down 4s ease-in-out infinite;
+}
+.punishment-stage.animated .split-vertical.fragment-0 {
+  animation: fragment-left 4s ease-in-out infinite;
+}
+.punishment-stage.animated .split-vertical.fragment-1 {
+  animation: fragment-right 4s ease-in-out infinite;
+}
+@keyframes fragment-up {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-2px, -7px);
+  }
+}
+@keyframes fragment-down {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(2px, 7px);
+  }
+}
+@keyframes fragment-left {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translateX(-6px);
+  }
+}
+@keyframes fragment-right {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translateX(6px);
+  }
+}
+@media (max-width: 1200px) {
+  header nav {
+    gap: 16px;
+  }
+  header {
+    gap: 28px;
+  }
+  header nav button {
+    font-size: 10px;
+  }
+  .header-right {
+    gap: 12px;
+  }
+  .character-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (max-width: 900px) {
+  header nav button {
+    font-size: 0;
+    gap: 0;
+  }
+  header nav {
+    gap: 17px;
+  }
+  .model-detail {
+    gap: 20px;
+  }
+  .punishment-thumbnails {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .library-tabs {
+    gap: 5px;
+  }
+  .library-tabs button {
+    font-size: 8px;
+    padding: 9px 7px;
+  }
+  .model-detail {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .model-portrait svg {
+    height: 230px;
+  }
+  .character-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .character-grid svg {
+    height: 108px;
+  }
+  .character-grid b {
+    font-size: 8px;
+  }
+  .punishment-thumbnails {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .punishment-portrait svg {
+    height: 270px;
+  }
+  .mythology-library h2 {
+    font-size: 23px !important;
+  }
+  .floor-truth {
+    padding: 12px;
+    gap: 8px;
+  }
+  .floor-truth b {
+    font-size: 12px;
+  }
+  .floor-truth p {
+    font-size: 8px;
+  }
+  .floor-truth button {
+    font-size: 8px;
+    white-space: normal;
+    max-width: 70px;
+  }
+  .realm-options button {
+    font-size: 8px;
+    padding: 7px 9px;
+  }
+  .rebirth-visual svg {
+    min-height: 180px;
+  }
+  .rebirth-steps small {
+    font-size: 9px;
+  }
+  .model-detail h3 {
+    font-size: 23px;
+  }
+  .library-footnote {
+    font-size: 8px !important;
+  }
+  header {
+    gap: 10px;
+  }
+  header nav {
+    gap: 10px;
+  }
+  .header-right .icon-button {
+    padding: 3px;
+  }
+  .brand small {
+    letter-spacing: 1px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animated *,
+  .pose-surprised * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+</style><g transform="translate(150 250) scale(1.4 1.4)" class="character-sprite kind-king pose-surprised animated" data-character="king-7"><title>Thái Sơn Vương · Mũ miện có chuỗi hạt, áo quan, râu và thẻ lệnh; phân biệt bằng số điện, màu áo và biển tên.</title><defs><linearGradient id="cloth-_R_4_" x2="1" y2="1"><stop stop-color="#6d7960"></stop><stop offset="1" stop-color="#6d7960" stop-opacity=".58"></stop></linearGradient><radialGradient id="face-_R_4_" cx=".35" cy=".25"><stop stop-color="#d1ae87"></stop><stop offset="1" stop-color="#d1ae87" stop-opacity=".78"></stop></radialGradient></defs><ellipse cy="4" rx="31" ry="8" fill="#091316" opacity=".35"></ellipse><g class="sprite-body" stroke="#1a2930" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"><g class="sprite-feet"><path d="M-19-16L-23 0Q-13 8-4 0L-6-15" fill="#25333b"></path><path d="M6-15L4 0Q15 8 24 0L20-16" fill="#25333b"></path></g><path d="M-27-11L-22-61Q0-74 23-61L29-11Q0 1-27-11Z" fill="url(#cloth-_R_4_)"></path><path d="M-19-60L0-32L20-61M0-31V-9" fill="none" stroke="#e1bc74" stroke-width="3"></path><path d="M-25-27Q0-20 26-27L26-17Q0-10-26-17Z" fill="#423b39"></path><rect x="-7" y="-27" width="14" height="12" rx="3" fill="#cba361"></rect><path d="M-12-8L-15-31M12-8L15-31" fill="none" stroke="#ffffff" opacity=".12"></path><g class="sprite-hand-left"><path d="M-22-58Q-47-50-39-28L-25-32L-15-51" fill="url(#cloth-_R_4_)"></path><circle cx="-33" cy="-31" r="8" fill="#d1ae87"></circle></g><g class="sprite-hand-right"><path d="M22-58Q44-52 38-29L25-32L15-50" fill="url(#cloth-_R_4_)"></path><circle cx="32" cy="-31" r="8" fill="#d1ae87"></circle></g><rect x="-29" y="-48" width="41" height="24" rx="3" fill="#e5cea0" transform="rotate(10)"></rect><path d="M-23-39L3-35M-22-32L0-29" stroke="#7e745c" stroke-width="1.5"></path><path d="M23-60L38-63L42-30L27-28Z" fill="#c6a660"></path><g class="sprite-head"><path d="M-28-80Q-29-107 0-108Q30-107 29-79Q25-54 0-53Q-25-54-28-80Z" fill="url(#face-_R_4_)"></path><path d="M-24-99L-20-119H20L24-99" fill="#253941"></path><path d="M-39-119L0-129L40-119L0-108Z" fill="#3c4342" stroke="#c4a365"></path><g><path d="M-25-116V-98" stroke="#c5a568" stroke-width="1"></path><circle cx="-25" cy="-97" r="2" fill="#e1c987"></circle></g><g><path d="M-13-116V-94" stroke="#c5a568" stroke-width="1"></path><circle cx="-13" cy="-93" r="2" fill="#e1c987"></circle></g><g><path d="M0-116V-98" stroke="#c5a568" stroke-width="1"></path><circle cx="0" cy="-97" r="2" fill="#e1c987"></circle></g><g><path d="M13-116V-94" stroke="#c5a568" stroke-width="1"></path><circle cx="13" cy="-93" r="2" fill="#e1c987"></circle></g><g><path d="M25-116V-98" stroke="#c5a568" stroke-width="1"></path><circle cx="25" cy="-97" r="2" fill="#e1c987"></circle></g><g class="sprite-eyes" stroke-width="2"><ellipse cx="-11" cy="-81" rx="7" ry="8" fill="#f2e9d2"></ellipse><ellipse cx="11" cy="-81" rx="7" ry="8" fill="#f2e9d2"></ellipse><circle cx="-9" cy="-80" r="3" fill="#27323a" stroke="none"></circle><circle cx="13" cy="-80" r="3" fill="#27323a" stroke="none"></circle></g><path d="M-19-94L-6-91M6-91L19-96" stroke="#53463b" stroke-width="3" fill="none"></path><ellipse cx="-21" cy="-69" rx="5" ry="3" fill="#d58b7d" opacity=".5" stroke="none"></ellipse><ellipse cx="21" cy="-69" rx="5" ry="3" fill="#d58b7d" opacity=".5" stroke="none"></ellipse><ellipse cy="-63" rx="5" ry="7" fill="#334144"></ellipse><path d="M-14-64Q-9-56 0-61Q9-56 14-64M-10-56L0-30L12-56" fill="#4b433d"></path><path d="M0-52V-35" stroke="#89725a" stroke-width="1"></path><path d="M31-93Q42-108 43-94Q42-82 33-85Z" fill="#8acbd9" stroke-width="1"></path></g><rect x="-11" y="-49" width="22" height="18" rx="4" fill="#d3af67"></rect><text x="0" y="-35" text-anchor="middle" font-size="12" fill="#57432f" stroke="none">7</text></g></g></svg>
