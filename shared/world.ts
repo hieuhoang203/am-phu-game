@@ -340,6 +340,7 @@ export interface Player {
   team?: Team;
   soul?: MischiefState;
   appearance?: SoulAppearance;
+  inputSeq?: number;
 }
 export interface Snapshot {
   players: Player[];

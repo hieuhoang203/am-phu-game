@@ -7,7 +7,7 @@ import {
 } from "../../shared/customization";
 export type SpritePose = "idle" | "work" | "surprised";
 /** Editable 2D rig. Origin at the feet; head, hands and props animate independently. */
-export function CharacterSprite({
+function CharacterSpriteRig({
   id = "quy-su",
   model,
   x = 0,
@@ -631,3 +631,5 @@ export function CharacterSprite({
     </g>
   );
 }
+
+export const CharacterSprite = React.memo(CharacterSpriteRig);

@@ -1,0 +1,30 @@
+{
+  "baseline": {
+    "inputDelayMs": 246,
+    "frames": 65,
+    "positionChanges": 4,
+    "distance": 45
+  },
+  "initialAfter": {
+    "inputDelayMs": 12,
+    "frames": 63,
+    "positionChanges": 62,
+    "distance": 291
+  },
+  "finalTwoBrowsers": {
+    "delayEachWayMs": 100,
+    "local": {
+      "inputDelayMs": 15,
+      "frames": 44,
+      "changes": 43,
+      "distance": 289.95000000000005
+    },
+    "remote": {
+      "inputDelayMs": null,
+      "frames": 47,
+      "changes": 32,
+      "distance": 204.12175140564364
+    },
+    "settledDifference": 0
+  }
+}

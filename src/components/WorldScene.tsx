@@ -1,3 +1,4 @@
+import type { WorldMotion } from "../motion";
 import React, { useRef, useState, useEffect } from "react";
 import { MAP, regionFor, pointKey, type Point } from "../../shared/exploration";
 import type { Floor, Player, Snapshot } from "../../shared/world";
@@ -7,6 +8,8 @@ import { Motif } from "./Motif";
 import { teams, stateNames } from "../../shared/mischief";
 import type { GameSettings } from "../settings";
 export function WorldScene({
+  motion,
+  acting,
   floor,
   me,
   world,
@@ -18,6 +21,8 @@ export function WorldScene({
   path,
   selected,
 }: {
+  motion: WorldMotion;
+  acting: boolean;
   floor: Floor;
   me?: Player;
   world: Snapshot;
@@ -40,21 +45,26 @@ export function WorldScene({
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
+  const [time, setTime] = useState(performance.now());
+  useEffect(() => {
+    let frame = 0;
+    const animate = (now: number) => {
+      setTime(now);
+      frame = requestAnimationFrame(animate);
+    };
+    frame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(frame);
+  }, []);
+  const players = world.players.map((p) => ({
+    ...p,
+    ...motion.position(p, time),
+  }));
+  const local = me ? players.find((p) => p.id === me.id) : undefined;
   const region = regionFor(floor.id),
     h = Math.min(740 / zoom, MAP.height),
     w = Math.min(h * aspect, MAP.width);
-  const cx = Math.max(w / 2, Math.min(MAP.width - w / 2, me?.x || 500)),
-    cy = Math.max(h / 2, Math.min(MAP.height - h / 2, me?.y || 550));
-  const ground =
-    region.biome === "frost"
-      ? "#273e4b"
-      : region.biome === "ember"
-        ? "#342b32"
-        : region.biome === "blood"
-          ? "#322d3c"
-          : region.biome === "grove"
-            ? "#253c37"
-            : "#293735";
+  const cx = Math.max(w / 2, Math.min(MAP.width - w / 2, local?.x || 500)),
+    cy = Math.max(h / 2, Math.min(MAP.height - h / 2, local?.y || 550));
   return (
     <svg
       ref={ref}
@@ -77,6 +87,195 @@ export function WorldScene({
         onGo({ x: t.x, y: t.y });
       }}
     >
+      <WorldTerrain
+        floor={floor}
+        settings={settings}
+        discoveries={me?.discoveries?.join("|") || ""}
+      />
+      {world.social?.bananas.map((b) => (
+        <text key={b.id} x={b.x} y={b.y} fontSize="30">
+          🍌
+        </text>
+      ))}
+      {path.length > 0 && me && (
+        <>
+          <path
+            d={`M${local?.x || me.x} ${local?.y || me.y} ${path.map((p) => `L${p.x} ${p.y}`).join(" ")}`}
+            stroke="#dac995"
+            strokeWidth="2"
+            strokeDasharray="4 9"
+            fill="none"
+            opacity=".65"
+          />
+          <circle
+            cx={path.at(-1)!.x}
+            cy={path.at(-1)!.y}
+            r="12"
+            fill="none"
+            stroke="#e8d49a"
+            strokeWidth="2"
+          />
+        </>
+      )}
+      {players
+        .filter((p) => p.soul?.dragging)
+        .map((p) => {
+          const victim = players.find((v) => v.id === p.soul?.dragging);
+          return victim ? (
+            <path
+              key={p.id}
+              d={`M${p.x} ${p.y - 18} L${victim.x} ${victim.y - 15}`}
+              stroke="#cfb67b"
+              strokeWidth="3"
+              strokeDasharray="5 4"
+            />
+          ) : null;
+        })}
+      {[...players]
+        .sort((a, b) => a.y - b.y)
+        .map((p) => (
+          <g
+            key={p.id}
+            className={`soul-actor state-${p.soul?.state || "free"}`}
+            data-player={p.id}
+            transform={`translate(${p.x} ${p.y})`}
+            onPointerDown={(e) => {
+              if (p.id !== me?.id) {
+                e.stopPropagation();
+                onSelect(p.id);
+              }
+            }}
+            style={{ cursor: p.id === me?.id ? "default" : "pointer" }}
+          >
+            <ellipse rx="24" ry="11" fill="#0f2425" opacity=".55" />
+            {p.id === me?.id && (
+              <ellipse
+                rx="26"
+                ry="12"
+                stroke="#f8d387"
+                strokeWidth="2"
+                fill="none"
+              />
+            )}
+            {selected === p.id && (
+              <ellipse
+                rx="32"
+                ry="17"
+                stroke="#f19c8c"
+                strokeWidth="2"
+                fill="none"
+              />
+            )}
+            <g className="soul-body-state">
+              <CharacterSprite
+                id="vong-hon"
+                pose={p.id === me?.id && acting ? "work" : "idle"}
+                y={0}
+                scale={0.48}
+                appearance={p.appearance}
+                animate={!settings.display.reduceMotion}
+              />
+            </g>
+            {p.soul && p.soul.guardUntil > (world.social?.serverTime || 0) && (
+              <circle
+                cy="-28"
+                r="40"
+                stroke="#a8daf3"
+                strokeWidth="3"
+                fill="#94d4e91a"
+              />
+            )}
+            {p.soul?.combo === 1 && (
+              <text x="20" y="-60" fontSize="20" fill="#f5cd85">
+                ✦
+              </text>
+            )}
+            {settings.display.showNames && (
+              <>
+                <rect
+                  x="-58"
+                  y="-83"
+                  width="116"
+                  height="23"
+                  rx="11"
+                  fill="#162c2e"
+                  opacity=".9"
+                />
+                <text
+                  y="-67"
+                  textAnchor="middle"
+                  fill={
+                    p.id === me?.id ? "#f3d895" : teams[p.team || "A"].color
+                  }
+                  fontSize="12"
+                >
+                  {p.name}
+                  {p.id === me?.id ? " · bạn" : ""}
+                </text>
+              </>
+            )}
+            {p.soul?.state !== "free" && (
+              <text y="-94" textAnchor="middle" fill="#ffcf8b" fontSize="12">
+                {stateNames[p.soul?.state || "free"]}
+              </text>
+            )}
+          </g>
+        ))}
+      {settings.display.particles &&
+        Array.from({ length: 30 }, (_, i) => (
+          <circle
+            key={i}
+            className="ow-firefly"
+            cx={150 + ((i * 397) % 2500)}
+            cy={100 + ((i * 281) % 1700)}
+            r={2 + (i % 2)}
+            fill="#d6dca8"
+            opacity=".5"
+            style={{ animationDelay: `${i % 7}s` }}
+          />
+        ))}
+      <rect
+        x="25"
+        y="25"
+        width={MAP.width - 50}
+        height={MAP.height - 50}
+        rx="90"
+        stroke="#132a2a"
+        strokeWidth="50"
+        fill="none"
+      />
+    </svg>
+  );
+}
+function floorsName(id: number) {
+  return `Vùng ${id}`;
+}
+
+const WorldTerrain = React.memo(function WorldTerrain({
+  floor,
+  settings,
+  discoveries,
+}: {
+  floor: Floor;
+  settings: GameSettings;
+  discoveries: string;
+}) {
+  const region = regionFor(floor.id),
+    discovered = new Set(discoveries.split("|"));
+  const ground =
+    region.biome === "frost"
+      ? "#273e4b"
+      : region.biome === "ember"
+        ? "#342b32"
+        : region.biome === "blood"
+          ? "#322d3c"
+          : region.biome === "grove"
+            ? "#253c37"
+            : "#293735";
+
+  return (
+    <>
+      {" "}
       <defs>
         <pattern
           id="terrain"
@@ -402,7 +601,7 @@ export function WorldScene({
                 height="36"
                 rx="5"
                 fill={
-                  me?.discoveries?.includes(pointKey(floor.id, l.id))
+                  discovered.has(pointKey(floor.id, l.id))
                     ? "#4d6054"
                     : "#ab8351"
                 }
@@ -470,160 +669,6 @@ export function WorldScene({
           </g>
         </g>
       ))}
-      {world.social?.bananas.map((b) => (
-        <text key={b.id} x={b.x} y={b.y} fontSize="30">
-          🍌
-        </text>
-      ))}
-      {path.length > 0 && me && (
-        <>
-          <path
-            d={`M${me.x} ${me.y} ${path.map((p) => `L${p.x} ${p.y}`).join(" ")}`}
-            stroke="#dac995"
-            strokeWidth="2"
-            strokeDasharray="4 9"
-            fill="none"
-            opacity=".65"
-          />
-          <circle
-            cx={path.at(-1)!.x}
-            cy={path.at(-1)!.y}
-            r="12"
-            fill="none"
-            stroke="#e8d49a"
-            strokeWidth="2"
-          />
-        </>
-      )}
-      {world.players
-        .filter((p) => p.soul?.dragging)
-        .map((p) => {
-          const victim = world.players.find((v) => v.id === p.soul?.dragging);
-          return victim ? (
-            <path
-              key={p.id}
-              d={`M${p.x} ${p.y - 18} L${victim.x} ${victim.y - 15}`}
-              stroke="#cfb67b"
-              strokeWidth="3"
-              strokeDasharray="5 4"
-            />
-          ) : null;
-        })}
-      {[...world.players]
-        .sort((a, b) => a.y - b.y)
-        .map((p) => (
-          <g
-            key={p.id}
-            className={`soul-actor state-${p.soul?.state || "free"}`}
-            data-player={p.id}
-            transform={`translate(${p.x} ${p.y})`}
-            onPointerDown={(e) => {
-              if (p.id !== me?.id) {
-                e.stopPropagation();
-                onSelect(p.id);
-              }
-            }}
-            style={{ cursor: p.id === me?.id ? "default" : "pointer" }}
-          >
-            <ellipse rx="24" ry="11" fill="#0f2425" opacity=".55" />
-            {p.id === me?.id && (
-              <ellipse
-                rx="26"
-                ry="12"
-                stroke="#f8d387"
-                strokeWidth="2"
-                fill="none"
-              />
-            )}
-            {selected === p.id && (
-              <ellipse
-                rx="32"
-                ry="17"
-                stroke="#f19c8c"
-                strokeWidth="2"
-                fill="none"
-              />
-            )}
-            <g className="soul-body-state">
-              <CharacterSprite
-                id="vong-hon"
-                y={0}
-                scale={0.48}
-                appearance={p.appearance}
-                animate={!settings.display.reduceMotion}
-              />
-            </g>
-            {p.soul && p.soul.guardUntil > (world.social?.serverTime || 0) && (
-              <circle
-                cy="-28"
-                r="40"
-                stroke="#a8daf3"
-                strokeWidth="3"
-                fill="#94d4e91a"
-              />
-            )}
-            {p.soul?.combo === 1 && (
-              <text x="20" y="-60" fontSize="20" fill="#f5cd85">
-                ✦
-              </text>
-            )}
-            {settings.display.showNames && (
-              <>
-                <rect
-                  x="-58"
-                  y="-83"
-                  width="116"
-                  height="23"
-                  rx="11"
-                  fill="#162c2e"
-                  opacity=".9"
-                />
-                <text
-                  y="-67"
-                  textAnchor="middle"
-                  fill={
-                    p.id === me?.id ? "#f3d895" : teams[p.team || "A"].color
-                  }
-                  fontSize="12"
-                >
-                  {p.name}
-                  {p.id === me?.id ? " · bạn" : ""}
-                </text>
-              </>
-            )}
-            {p.soul?.state !== "free" && (
-              <text y="-94" textAnchor="middle" fill="#ffcf8b" fontSize="12">
-                {stateNames[p.soul?.state || "free"]}
-              </text>
-            )}
-          </g>
-        ))}
-      {settings.display.particles &&
-        Array.from({ length: 30 }, (_, i) => (
-          <circle
-            key={i}
-            className="ow-firefly"
-            cx={150 + ((i * 397) % 2500)}
-            cy={100 + ((i * 281) % 1700)}
-            r={2 + (i % 2)}
-            fill="#d6dca8"
-            opacity=".5"
-            style={{ animationDelay: `${i % 7}s` }}
-          />
-        ))}
-      <rect
-        x="25"
-        y="25"
-        width={MAP.width - 50}
-        height={MAP.height - 50}
-        rx="90"
-        stroke="#132a2a"
-        strokeWidth="50"
-        fill="none"
-      />
-    </svg>
+    </>
   );
-}
-function floorsName(id: number) {
-  return `Vùng ${id}`;
-}
+});

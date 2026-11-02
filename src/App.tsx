@@ -1,3 +1,4 @@
+import { WorldMotion } from "./motion";
 import { actionHint } from "./actionHint";
 import React, { useEffect, useRef, useState } from "react";
 import { io, type Socket } from "socket.io-client";
@@ -26,19 +27,17 @@ import {
   LocateFixed,
   HelpCircle,
 } from "lucide-react";
-import { floors, WORLD, type Snapshot, type Player } from "../shared/world";
+import { floors, type Snapshot, type Player } from "../shared/world";
 import {
   MAP,
   regionFor,
   regionRoute,
   routeTo,
-  clearSegment,
   near,
   type Point,
 } from "../shared/exploration";
 import {
   prankRules,
-  movementFactor,
   stateNames,
   teams,
   type PrankAction,
@@ -115,6 +114,11 @@ export default function App() {
       rebirth?: boolean;
     } | null>(null),
     [destination, setDestination] = useState<number | null>(null);
+  const [pressedAction, setPressedAction] = useState<PrankAction | null>(null);
+  const pressTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
+  useEffect(() => () => clearTimeout(pressTimer.current), []);
   const socket = useRef<Socket | undefined>(undefined),
     worldRef = useRef(world),
     idRef = useRef(id),
@@ -126,6 +130,7 @@ export default function App() {
     keys = useRef(new Set<string>()),
     stick = useRef<Point>({ x: 0, y: 0 }),
     audio = useRef<GameAudio | undefined>(undefined);
+  const motion = useRef(new WorldMotion()).current;
   const pending = useRef<string | null>(null),
     destinationRef = useRef<number | null>(null),
     lastRegion = useRef(0);
@@ -137,8 +142,12 @@ export default function App() {
   selectedRef.current = selected;
   destinationRef.current = destination;
   if (!audio.current) audio.current = new GameAudio();
-  const me = world.players.find((p) => p.id === id),
-    floor = floors[(me?.floor || 1) - 1],
+  const authoritativeMe = world.players.find((p) => p.id === id);
+  const me =
+    authoritativeMe && motion.player?.id === id
+      ? { ...authoritativeMe, x: motion.player.x, y: motion.player.y }
+      : authoritativeMe;
+  const floor = floors[(me?.floor || 1) - 1],
     region = regionFor(floor.id),
     target = world.players.find((p) => p.id === selected),
     closest = me
@@ -159,15 +168,45 @@ export default function App() {
     void audio.current?.unlock();
     audio.current?.play(cue);
   };
+  const flushMotion = () => {
+    const batch = motion.flush();
+    if (batch.length && socket.current?.connected)
+      socket.current.emit("input", batch);
+  };
+  const interact = (id: string) => {
+    flushMotion();
+    socket.current?.emit("interact", id);
+  };
   const prank = (action: PrankAction) => {
-    const p = worldRef.current.players.find((p) => p.id === idRef.current);
+    const p = motion.player;
+    if (!p) return;
+    const actual = action === "drag" && p.soul?.dragging ? "release" : action;
+    const current = worldRef.current,
+      target = current.players.find((v) => v.id === selectedRef.current);
+    const hint = actionHint(actual, p, target, current);
+    if (hint) {
+      setNotice(hint);
+      audio.current?.play("error");
+      return;
+    }
+    flushMotion();
+    setPressedAction(actual);
+    clearTimeout(pressTimer.current);
+    pressTimer.current = setTimeout(() => setPressedAction(null), 180);
+    sound(
+      ["bonk", "push", "throw", "rescue", "guard", "banana"].includes(actual)
+        ? (actual as SoundCue)
+        : "click",
+    );
     socket.current?.emit("mischief", {
-      action: action === "drag" && p?.soul?.dragging ? "release" : action,
+      action: actual,
       targetId: selectedRef.current,
     });
   };
   const walk = (point: Point, interact?: string) => {
-    const p = worldRef.current.players.find((p) => p.id === idRef.current);
+    const p =
+      motion.player ||
+      worldRef.current.players.find((p) => p.id === idRef.current);
     if (!p) return;
     const r = regionFor(p.floor),
       l = r.landmarks.find((l) => near(point, l, 65) && l.kind !== "arena");
@@ -214,6 +253,7 @@ export default function App() {
       setConnected(false);
       setNotice("Mất kết nối. Đang kết nối lại…");
       route.current = [];
+      motion.reset();
       keys.current.clear();
     });
     s.on(
@@ -229,6 +269,12 @@ export default function App() {
       }) => {
         sessionStorage.setItem("ap-token", token);
         sessionStorage.setItem("ap-room", room);
+        motion.reset();
+        motion.receive(
+          { players: [player], lanterns: [], chat: [] },
+          player.id,
+          performance.now(),
+        );
         setId(player.id);
         idRef.current = player.id;
         setJoined(true);
@@ -241,23 +287,16 @@ export default function App() {
     );
     s.on("world", (v: Snapshot) => {
       worldRef.current = v;
+      motion.receive(v, idRef.current, performance.now());
       setWorld(v);
     });
     s.on("notice", setNotice);
     s.on("dialog", setDialog);
     s.on("appearance-saved", () => setAppearanceStatus("Đã đồng bộ"));
     s.on("appearance-error", setAppearanceStatus);
-    s.on("action-result", ({ ok, action }: { ok: boolean; action: string }) =>
-      audio.current?.play(
-        ok
-          ? ["bonk", "push", "throw", "rescue", "guard", "banana"].includes(
-              action,
-            )
-            ? (action as SoundCue)
-            : "click"
-          : "error",
-      ),
-    );
+    s.on("action-result", ({ ok }: { ok: boolean }) => {
+      if (!ok) audio.current?.play("error");
+    });
     const focus = () => audio.current?.setFocused(!document.hidden),
       blur = () => {
         keys.current.clear();
@@ -349,7 +388,7 @@ export default function App() {
         setDestination(null);
       }
       if (k === "e" && !e.repeat) {
-        const p = worldRef.current.players.find((p) => p.id === idRef.current);
+        const p = motion.player;
         if (p) {
           const l = regionFor(p.floor)
             .landmarks.filter((l) => near(p, l))
@@ -358,7 +397,7 @@ export default function App() {
                 Math.hypot(a.x - p.x, a.y - p.y) -
                 Math.hypot(b.x - p.x, b.y - p.y),
             )[0];
-          if (l) socket.current?.emit("interact", l.id);
+          if (l) interact(l.id);
         }
       }
       if (hotkeys[k] && !e.repeat) {
@@ -375,14 +414,32 @@ export default function App() {
     };
   }, []);
   useEffect(() => {
-    const timer = setInterval(() => {
+    let frame = 0,
+      previous = performance.now(),
+      lastSend = previous,
+      accumulated = 0;
+    const update = (time: number) => {
+      frame = requestAnimationFrame(update);
+      const elapsed = Math.min(40, Math.max(0, time - previous));
+      previous = time;
+      accumulated = Math.min(40, accumulated + elapsed);
+      if (time - lastSend >= 50) {
+        flushMotion();
+        lastSend = time;
+      }
+      // Simulate at most 125 Hz so 144/240 Hz screens do not overflow input batches.
+      if (accumulated < 8) return;
+      const dt = accumulated;
+      accumulated = 0;
       if (modalRef.current || !socket.current?.connected) return;
-      const p = worldRef.current.players.find((p) => p.id === idRef.current);
+      const p = motion.player;
       if (!p) return;
       if (p.soul && p.soul.state !== "free") {
-        route.current = [];
+        if (route.current.length) {
+          route.current = [];
+          setPath([]);
+        }
         pending.current = null;
-        setPath([]);
         return;
       }
       const r = regionFor(p.floor);
@@ -416,34 +473,23 @@ export default function App() {
       if (!dx && !dy && next) {
         dx = next.x - p.x;
         dy = next.y - p.y;
-        if (Math.hypot(dx, dy) < 15) {
+        if (Math.hypot(dx, dy) < 6) {
           route.current.shift();
           setPath([...route.current]);
           if (!route.current.length && pending.current) {
-            socket.current.emit("interact", pending.current);
+            interact(pending.current);
             pending.current = null;
           }
           return;
         }
       }
-      const len = Math.hypot(dx, dy);
-      if (!len) return;
-      const speed = WORLD.speed * movementFactor(p.soul, Date.now()) * 0.045;
-      let to = {
-        x: p.x + (dx / len) * Math.min(speed, len < 2 ? speed : len),
-        y: p.y + (dy / len) * Math.min(speed, len < 2 ? speed : len),
-      };
-      if (!clearSegment(r, p, to)) {
-        const x = { x: to.x, y: p.y },
-          y = { x: p.x, y: to.y };
-        if (clearSegment(r, p, x)) to = x;
-        else if (clearSegment(r, p, y)) to = y;
-        else return;
-      }
-      socket.current.emit("move", to);
-    }, 50);
-    return () => clearInterval(timer);
+      const scale = Math.max(1, Math.hypot(dx, dy));
+      motion.step(dx / scale, dy / scale, dt);
+    };
+    frame = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(frame);
   }, []);
+
   function join(e: React.FormEvent) {
     e.preventDefault();
     if (!connected) {
@@ -490,6 +536,8 @@ export default function App() {
       }}
     >
       <WorldScene
+        motion={motion}
+        acting={pressedAction !== null}
         floor={floor}
         me={me}
         world={world}
@@ -743,7 +791,7 @@ export default function App() {
               {closest ? (
                 <button
                   className="ow-interact"
-                  onClick={() => socket.current?.emit("interact", closest.id)}
+                  onClick={() => interact(closest.id)}
                 >
                   <kbd>E</kbd>
                   <span>
@@ -784,11 +832,12 @@ export default function App() {
                 return (
                   <button
                     key={a}
+                    className={
+                      pressedAction === actual ? "ow-action-pressed" : ""
+                    }
                     aria-label={rule.label}
                     title={`${rule.label} · ${rule.cost} thể lực. ${hint ? hint + ". " : ""}${rule.hint}`}
-                    disabled={
-                      !connected || !!hint
-                    }
+                    disabled={!connected || !!hint}
                     onClick={() => prank(actual)}
                   >
                     <kbd>{settings.display.showKeys ? rule.key : ""}</kbd>

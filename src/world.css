@@ -1505,3 +1505,4 @@ main.ow-game {
     bottom: 332px;
   }
 }
+.ow-hotbar button.ow-action-pressed{border-color:#f8df9b;box-shadow:0 0 18px #e9ca8066;background:#637451;transform:translateY(1px)}

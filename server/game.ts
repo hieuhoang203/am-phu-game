@@ -1,3 +1,4 @@
+import { advanceMotion, validMotionInput } from "../shared/motion";
 import {
   MAP,
   regionFor,
@@ -52,14 +53,18 @@ export function attachGame(io: Server, savePath: string) {
     : {};
   const active = new Map<string, string>();
   const broadcast = (room: Room) => {
-    for (const peer of room.players.values())
-      io.to(peer.id).emit("world", {
-        players: [...room.players.values()].filter(
-          (p) => p.floor === peer.floor,
-        ),
-        lanterns: room.lanterns.get(peer.floor) || [false, false],
+    const byFloor = new Map<number, Player[]>();
+    for (const peer of room.players.values()) {
+      const group = byFloor.get(peer.floor) || [];
+      group.push(peer);
+      byFloor.set(peer.floor, group);
+    }
+    for (const [floor, peers] of byFloor)
+      io.to(peers.map((p) => p.id)).emit("world", {
+        players: peers,
+        lanterns: room.lanterns.get(floor) || [false, false],
         chat: room.chat,
-        social: room.engine.snapshot(peer.floor),
+        social: room.engine.snapshot(floor),
       });
   };
   const timer = setInterval(() => {
@@ -67,7 +72,7 @@ export function attachGame(io: Server, savePath: string) {
       room.engine.tick();
       broadcast(room);
     }
-  }, 100);
+  }, 50);
   timer.unref();
   io.httpServer?.once("close", () => clearInterval(timer));
   const persist = () => {
@@ -81,6 +86,8 @@ export function attachGame(io: Server, savePath: string) {
       player: Player | undefined,
       key = "",
       lastMove = Date.now(),
+      inputCredit = 50,
+      lastInputAt = Date.now(),
       lastChat = 0,
       windowStart = Date.now(),
       actions = 0;
@@ -185,9 +192,46 @@ export function attachGame(io: Server, savePath: string) {
       tell(`${name} vừa đến Quỷ Môn Quan.`);
       emit();
     });
+    socket.on("input", (batch: unknown) => {
+      if (
+        !player ||
+        !room ||
+        limited() ||
+        !Array.isArray(batch) ||
+        batch.length < 1 ||
+        batch.length > 8 ||
+        !batch.every(validMotionInput)
+      )
+        return;
+      const now = Date.now();
+      inputCredit = Math.min(150, inputCredit + Math.max(0, now - lastInputAt));
+      lastInputAt = now;
+      room.engine.tick();
+      for (const command of batch) {
+        if (command.seq <= (player.inputSeq || 0)) continue;
+        player.inputSeq = command.seq;
+        if (command.floor !== player.floor) continue;
+        const dt = Math.min(command.dt, inputCredit);
+        inputCredit -= dt;
+        if (dt <= 0) continue;
+        const previous = { x: player.x, y: player.y };
+        Object.assign(
+          player,
+          advanceMotion(
+            player.floor,
+            player,
+            { ...command, dt },
+            room.engine.speed(player),
+          ),
+        );
+        room.engine.moved(player, previous);
+      }
+      lastMove = now;
+    });
     socket.on("move", (input: unknown) => {
       if (!player || !room || limited() || !input || typeof input !== "object")
         return;
+      if (player.inputSeq) return;
       const { x, y } = input as { x: number; y: number };
       if (!Number.isFinite(x) || !Number.isFinite(y)) return;
       room.engine.tick();
@@ -204,7 +248,8 @@ export function attachGame(io: Server, savePath: string) {
       player.x = x;
       player.y = y;
       room.engine.moved(player, previous);
-      emit();
+      inputCredit = 0;
+      lastInputAt = now;
     });
     socket.on("appearance", (input: unknown) => {
       if (!player || !room || limited()) return;

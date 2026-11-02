@@ -51,7 +51,7 @@ Thanh kỹ năng cho biết hồi chiêu và thể lực. Di chuột lên từng
 
 ## Công nghệ và tổ chức mã
 
-React 19 + TypeScript + Vite 6; cảnh SVG với camera và điều khiển 20 lần/giây. Node.js + Express 5 + Socket.IO 4 kiểm tra luật phía máy chủ. Tiến độ ghi JSON bằng file tạm rồi đổi tên.
+React 19 + TypeScript + Vite 6; cảnh SVG vẽ theo nhịp màn hình bằng requestAnimationFrame. Nhân vật của mình được dự đoán tại máy, người khác được nội suy; gửi lệnh và đồng bộ trạng thái khoảng 20 lần/giây. Node.js + Express 5 + Socket.IO 4 kiểm tra luật phía máy chủ. Tiến độ ghi JSON bằng file tạm rồi đổi tên.
 
 ```text
 src/
@@ -60,9 +60,11 @@ src/
   components/CharacterSprite.tsx / PunishmentStage.tsx
   components/SettingsPanel.tsx / MythologyLibrary.tsx
   world.css                  Giao diện thế giới mở, desktop và cảm ứng
+  motion.ts                  Dự đoán, đối chiếu input được xác nhận, nội suy người khác
   settings.ts / audio.ts      Lưu tùy chỉnh, âm thanh tổng hợp
 shared/
   exploration.ts             18 vùng, địa điểm, đồ thị cổng, va chạm, tìm đường A*
+  motion.ts                  Lệnh di chuyển và va chạm dùng chung máy khách / máy chủ
   world.ts                   Truyền thuyết tiếng Việt và kiểu giao thức
   mischief.ts                Thể lực, trạng thái, chiêu và vùng bảo hộ
   mythology.ts / customization.ts
@@ -86,8 +88,10 @@ npm run build
 npm run check:language
 # Khởi động npm start ở cửa sổ khác trước khi chạy:
 $env:GAME_URL='http://localhost:3001'
-npx playwright test tests/browser.spec.mjs tests/models.spec.mjs tests/settings.spec.mjs tests/mischief.spec.mjs --workers=1 --reporter=line
+npx playwright test tests/browser.spec.mjs tests/models.spec.mjs tests/settings.spec.mjs tests/mischief.spec.mjs tests/motion.spec.mjs --workers=1 --reporter=line
 ```
+
+Chi tiết tối ưu độ trễ và cách kiểm chứng: [PERFORMANCE.md](docs/PERFORMANCE.md).
 
 Tài liệu: [Gameplay](docs/GAMEPLAY.md), [kiến trúc](docs/ARCHITECTURE.md), [18 tầng](docs/FLOORS.md), [nghiên cứu và nguồn](docs/RESEARCH.md), [kiểm chứng 0.5](docs/VALIDATION-0.5.md). Thư viện model độc lập: `/models/index.html`.
 

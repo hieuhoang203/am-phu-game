@@ -20,7 +20,7 @@ test("three souls can stun, drag, throw, rescue and compare team scores in the o
     await Promise.all([
       walk(a, 400, 440),
       walk(b, 442, 440),
-      walk(c, 420, 485),
+      walk(c, 430, 480),
     ]);
     await a.waitForTimeout(2600);
     const victim = await at(b);
